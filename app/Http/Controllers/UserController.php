@@ -126,8 +126,9 @@ class UserController extends Controller
 
             $email = $request->input('email');
             $password = $request->input('password');
+            $hashedPassword = Hash::make($password);
 
-            User::where('email', '=', $email)->update(['password' => $password]);
+            User::where('email', '=', $email)->update(['password' => $hashedPassword]);
 
             return response()->json([
                 'status' => 'success',
@@ -140,5 +141,42 @@ class UserController extends Controller
             ]);
         }
     }
-    function UserProfile(Request $request) {}
+    function UserProfile(Request $request)
+    {
+        $email = $request->header('email');
+        $user = User::where('email', '=', $email)->first();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Request Success',
+            'data' => $user
+        ]);
+    }
+
+    function UpdateProfile(Request $request)
+    {
+        try {
+            $email = $request->header('email');
+            $name = $request->input('name');
+            $mobile = $request->input('mobile');
+            $password = $request->input('password');
+
+            User::where('email', '=', $email)->update([
+                'name' => $name,
+                'mobile' => $mobile,
+                'email' => $email,
+                'password' => $password
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Request Successfull'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Something Went Wrong'
+            ]);
+        }
+    }
 }
