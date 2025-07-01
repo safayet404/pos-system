@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -153,30 +154,39 @@ class UserController extends Controller
         ]);
     }
 
+
+
     function UpdateProfile(Request $request)
     {
         try {
             $email = $request->header('email');
-            $name = $request->input('name');
-            $mobile = $request->input('mobile');
-            $password = $request->input('password');
 
-            User::where('email', '=', $email)->update([
-                'name' => $name,
-                'mobile' => $mobile,
-                'email' => $email,
-                'password' => $password
-            ]);
+            // Find the user by email
+            $user = User::where('email', $email)->firstOrFail();
+
+            // Get only valid fields from request
+            $data = $request->only(['name', 'mobile', 'password']);
+
+            // If password is present, hash it
+            if (!empty($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            } else {
+                // If password not provided, remove from update data
+                unset($data['password']);
+            }
+
+            // Fill and save only provided fields
+            $user->fill($data)->save();
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Request Successfull'
+                'message' => 'Profile updated successfully'
             ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'fail',
-                'message' => 'Something Went Wrong'
-            ]);
+                'message' => 'Something went wrong'
+            ], 500);
         }
     }
 }
