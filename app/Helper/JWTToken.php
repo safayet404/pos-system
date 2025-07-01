@@ -8,7 +8,7 @@ use Firebase\JWT\Key;
 
 class JWTToken
 {
-    public static function CreateToken($userEmail, $userID): string
+    public static function CreateToken($userEmail, $userID)
     {
         $key = env('JWT_KEY');
         $payload = [
@@ -22,7 +22,7 @@ class JWTToken
         return JWT::encode($payload, $key, 'HS256');
     }
 
-    public static function VerifyToken($token): string|object
+    public static function VerifyToken($token)
     {
         try {
             if ($token == null) {
@@ -36,7 +36,7 @@ class JWTToken
             return 'unauthorized';
         }
     }
-    public static function CreateTokenForSetPassword($userEmail): string
+    public static function CreateTokenForSetPassword($userEmail)
     {
         $key = env('JWT_KEY');
         $payload = [
