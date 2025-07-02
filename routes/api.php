@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationAPIMiddleware;
 use Illuminate\Http\Request;
@@ -28,4 +29,14 @@ Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {
     Route::post('/delete-category', [CategoryController::class, 'CategoryDelete']);
     Route::get('/category-by-id', [CategoryController::class, 'CategoryByID']);
     Route::post('/update-category', [CategoryController::class, 'CategoryUpdate']);
+});
+
+// Customer Routes
+
+Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {
+    Route::post('/create-customer', [CustomerController::class, 'CustomerCreate']);
+    Route::get('/list-customer', [CustomerController::class, 'CustomerList']);
+    Route::post('/delete-customer', [CustomerController::class, 'CustomerDelete']);
+    Route::get('/customer-by-id', [CustomerController::class, 'CustomerByID']);
+    Route::post('/update-customer', [CustomerController::class, 'CustomerUpdate']);
 });
