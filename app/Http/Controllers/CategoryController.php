@@ -31,7 +31,7 @@ class CategoryController extends Controller
     function CategoryByID(Request $request)
     {
         try {
-            $category_id = $request->query('id');
+            $category_id = $request->input('id');
             $user_id = $request->header('id');
 
             $category = Category::where('id', $category_id)
@@ -52,7 +52,7 @@ class CategoryController extends Controller
     {
 
         try {
-            $category_id = $request->query('id');
+            $category_id = $request->input('id');
             $user_id = $request->header('id');
 
             $category = Category::where('id', $category_id)->where('user_id', $user_id)->first();
