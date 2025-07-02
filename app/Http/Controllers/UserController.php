@@ -22,16 +22,22 @@ class UserController extends Controller
     {
 
         try {
-            $email = $request->input('email');
-            $name = $request->input('name');
-            $mobile = $request->input('mobile');
-            $password = $request->input('password');
+
+
+            $validated = $request->validate([
+                'name' => 'required|string|max:50',
+                'email' => 'required|email|unique:users,email',
+                'mobile' => 'required|string|max:50',
+                'password' => 'required|string|min:6'
+
+
+            ]);
 
             User::create([
-                'name' => $name,
-                'email' => $email,
-                'mobile' => $mobile,
-                'password' => $password
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'mobile' => $validated['mobile'],
+                'password' => $validated['password']
             ]);
 
             return response()->json(['status' => 'success', 'message' => 'User Registration Successfull']);

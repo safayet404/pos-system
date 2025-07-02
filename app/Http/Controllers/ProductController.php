@@ -10,15 +10,30 @@ class ProductController extends Controller
 {
     function ProductCreate(Request $request)
     {
-        $user_id = $request->header('id');
+        try {
+            $user_id = $request->header('id');
 
-        return Product::create([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-            'unit' => $request->input('unit'),
-            'category_id' => $request->input('category_id'),
-            'user_id' => $user_id
-        ]);
+            $validated = $request->validate([
+                'name' => 'required|string|max:50',
+                'price' => 'required|numeric|min:0',
+                'unit' => 'required|string|max:20',
+                'category_id' => 'required|integer|exists:categories,id'
+            ]);
+
+            return Product::create([
+                'name' => $validated['name'],
+                'price' =>  $validated['price'],
+                'unit' => $validated['unit'],
+                'category_id' => $validated['category_id'],
+                'user_id' => $user_id
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Product creation failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
     function ProductList(Request $request)
     {
@@ -31,7 +46,14 @@ class ProductController extends Controller
         $user_id = $request->header('id');
         $product_id = $request->input('id');
 
-        return Product::where('id', $product_id)->where('user_id', $user_id)->delete();
+        $category = Product::where('id', $product_id)->where('user_id', $user_id)->first();
+
+        if ($category) {
+
+            return Product::where('id', $product_id)->where('user_id', $user_id)->delete();
+        } else {
+            return response()->json(['status' => 'failed', 'message' => "This Product is not exist in the system"]);
+        }
     }
     function ProductByID(Request $request)
     {

@@ -16,8 +16,12 @@ class CategoryController extends Controller
     function CategoryCreate(Request $request)
     {
         $user_id = $request->header('id');
+        $validated = $request->validate([
+            'name' => 'required|string|max:50'
+        ]);
+
         return Category::create([
-            'name' => $request->input('name'),
+            'name' => $validated['name'],
             'user_id' => $user_id
         ]);
     }
@@ -26,7 +30,13 @@ class CategoryController extends Controller
         $category_id = $request->input('id');
         $user_id = $request->header('id');
 
-        return Category::where('id', $category_id)->where('user_id', $user_id)->delete();
+        $category = Category::where('id', $category_id)->where('user_id', $user_id)->first();
+
+        if ($category) {
+            return Category::where('id', $category_id)->where('user_id', $user_id)->delete();
+        } else {
+            return response()->json(['status' => 'failed', 'message' => "This category is not exist in the system"]);
+        }
     }
     function CategoryByID(Request $request)
     {

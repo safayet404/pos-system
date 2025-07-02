@@ -8,17 +8,36 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    function CustomerCreate(Request $request)
+    public function CustomerCreate(Request $request)
     {
-        $user_id = $request->header('id');
+        try {
+            $user_id = $request->header('id');
 
-        return Customer::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'mobile' => $request->input('mobile'),
-            'user_id' => $user_id
-        ]);
+            $validated = $request->validate([
+                'name' => 'required|string|max:50',
+                'email' => 'required|email|unique:customers,email',
+                'mobile' => 'required|string|max:50'
+            ]);
+
+            $customer = Customer::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'mobile' => $validated['mobile'],
+                'user_id' => $user_id
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $customer
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
+
     function CustomerList(Request $request)
     {
         $user_id = $request->header('id');
@@ -30,7 +49,14 @@ class CustomerController extends Controller
         $user_id = $request->header('id');
         $customer_id = $request->input('id');
 
-        return Customer::where('id', $customer_id)->where('user_id', $user_id)->delete();
+        $customer = Customer::where('id', $customer_id)->where('user_id', $user_id)->first();
+
+        if ($customer) {
+
+            return Customer::where('id', $customer_id)->where('user_id', $user_id)->delete();
+        } else {
+            return response()->json(['status' => 'failed', 'message' => "This user is not exist in the system"]);
+        }
     }
     function CustomerByID(Request $request)
     {

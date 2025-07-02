@@ -16,42 +16,54 @@ class InvoiceController extends Controller
         DB::beginTransaction();
 
         try {
-
             $user_id = $request->header('id');
 
-            $total = $request->input('total');
-            $discount = $request->input('discount');
-            $vat = $request->input('vat');
-            $payable = $request->input('payable');
-            $customer_id = $request->input('customer_id');
+            $validated = $request->validate([
+                'total' => 'required|numeric',
+                'discount' => 'required|numeric',
+                'vat' => 'required|numeric',
+                'payable' => 'required|numeric',
+                'customer_id' => 'required|exists:customers,id',
+                'products' => 'required|array|min:1',
+                'products.*.product_id' => 'required|exists:products,id',
+                'products.*.qty' => 'required|numeric|min:1',
+                'products.*.sale_price' => 'required|numeric|min:0'
+            ]);
 
             $invoice = Invoice::create([
-                'total' => $total,
-                'discount' => $discount,
-                'vat' => $vat,
-                'payable' => $payable,
+                'total' => $validated['total'],
+                'discount' => $validated['discount'],
+                'vat' => $validated['vat'],
+                'payable' => $validated['payable'],
                 'user_id' => $user_id,
-                'customer_id' => $customer_id
+                'customer_id' => $validated['customer_id']
             ]);
 
             $invoiceID = $invoice->id;
-            $products = $request->input('products');
 
-            foreach ($products as $EachProduct) {
+            foreach ($validated['products'] as $product) {
                 InvoiceProduct::create([
                     'invoice_id' => $invoiceID,
                     'user_id' => $user_id,
-                    'product_id' => $EachProduct['product_id'],
-                    'qty' => $EachProduct['qty'],
-                    'sale_price' => $EachProduct['sale_price']
+                    'product_id' => $product['product_id'],
+                    'qty' => $product['qty'],
+                    'sale_price' => $product['sale_price']
                 ]);
             }
 
             DB::commit();
-            return 1;
-        } catch (Exception  $e) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Invoice created successfully',
+                'invoice_id' => $invoiceID
+            ], 201);
+        } catch (Exception $e) {
             DB::rollBack();
-            return 0;
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Invoice creation failed',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -84,25 +96,43 @@ class InvoiceController extends Controller
 
     function InvoiceDelete(Request $request)
     {
-
         DB::beginTransaction();
         try {
             $user_id = $request->header('id');
-            $invoice_id = $request->input('inv_id');
 
-            InvoiceProduct::where('invoice_id', $invoice_id)->where('user_id', $user_id)->delete();
+            $validated = $request->validate([
+                'inv_id' => 'required|exists:invoices,id'
+            ]);
 
-            Invoice::where('id', $invoice_id)->delete();
+            $invoice_id = $validated['inv_id'];
+
+            // Delete related invoice products
+            InvoiceProduct::where('invoice_id', $invoice_id)
+                ->where('user_id', $user_id)
+                ->delete();
+
+            // Delete invoice itself
+            $deleted = Invoice::where('id', $invoice_id)
+                ->where('user_id', $user_id)
+                ->delete();
+
+            if ($deleted === 0) {
+                throw new \Exception("Invoice not found or does not belong to user");
+            }
 
             DB::commit();
 
             return response()->json([
                 "status" => "success",
                 "message" => "Invoice deleted"
-            ]);
-        } catch (Exception  $e) {
+            ], 200);
+        } catch (Exception $e) {
             DB::rollBack();
-            return 0;
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Invoice deletion failed',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
