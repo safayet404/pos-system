@@ -35,7 +35,7 @@ class CustomerController extends Controller
     function CustomerByID(Request $request)
     {
         $user_id = $request->header('id');
-        $customer_id = $request->query('id');
+        $customer_id = $request->input('id');
 
         return Customer::where('id', $customer_id)->where('user_id', $user_id)->first();
     }
@@ -43,7 +43,7 @@ class CustomerController extends Controller
     {
         try {
             $user_id = $request->header('id');
-            $customer_id = $request->query('id');
+            $customer_id = $request->input('id');
 
             $customer = Customer::where('id', $customer_id)->where('user_id', $user_id)->first();
 
