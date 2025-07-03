@@ -16,7 +16,9 @@ class JWTToken
             'iat' => time(),
             'exp' => time() + 60 * 60 * 24 * 30,
             'userEmail' => $userEmail,
-            'userID' => $userID
+            'userID' => $userID,
+            'role' => 'user'
+
         ];
 
         return JWT::encode($payload, $key, 'HS256');
@@ -35,6 +37,22 @@ class JWTToken
         } catch (Exception $e) {
             return 'unauthorized';
         }
+    }
+
+    public static function CreateEmployeeToken($email, $employeeID, $userID)
+    {
+        $key = env('JWT_KEY');
+        $payload = [
+            'iss' => 'laravel-token',
+            'iat' => time(),
+            'exp' => time() + 60 * 60 * 24 * 30, // 30 days
+            'employeeEmail' => $email,
+            'employeeID' => $employeeID,
+            'userID' => $userID, // owner's ID
+            'role' => 'employee'
+        ];
+
+        return JWT::encode($payload, $key, 'HS256');
     }
     public static function CreateTokenForSetPassword($userEmail)
     {

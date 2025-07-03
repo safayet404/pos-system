@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -64,4 +65,15 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/summary', [DashboardController::class, 'Summary']);
+});
+
+
+// For employee
+
+Route::post('/employee-login', [EmployeeController::class, 'Login']);
+Route::post('/employee-logout', [EmployeeController::class, 'Logout']);
+
+Route::middleware([TokenVerificationMiddleware::class])->group(function () {
+    Route::post('/employee-register', [EmployeeController::class, 'Register']);
+    Route::get('/employee-profile', [EmployeeController::class, 'Profile']);
 });
