@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -19,9 +20,13 @@ Route::post('/user-login', [UserController::class, 'UserLogin']);
 Route::get('/user-logout', [UserController::class, 'UserLogout']);
 Route::get('/send-otp', [UserController::class, 'SendOTPCode']);
 Route::get('/verify-otp', [UserController::class, 'VerifyOTP']);
-Route::post('/reset-password', [UserController::class, 'ResetPassword'])->middleware([TokenVerificationAPIMiddleware::class]);
-Route::get('/user-profile', [UserController::class, 'UserProfile'])->middleware([TokenVerificationAPIMiddleware::class]);
-Route::put('/user-update', [UserController::class, 'UpdateProfile'])->middleware([TokenVerificationAPIMiddleware::class]);
+
+Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {
+
+    Route::post('/reset-password', [UserController::class, 'ResetPassword']);
+    Route::get('/user-profile', [UserController::class, 'UserProfile']);
+    Route::put('/user-update', [UserController::class, 'UpdateProfile']);
+});
 
 
 // Category Routes
@@ -33,6 +38,7 @@ Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {
     Route::get('/category-by-id', [CategoryController::class, 'CategoryByID']);
     Route::post('/update-category', [CategoryController::class, 'CategoryUpdate']);
 });
+Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {});
 
 // Customer Routes
 
@@ -67,4 +73,16 @@ Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {
 
 Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {
     Route::get('/summary', [DashboardController::class, 'Summary']);
+});
+
+
+
+// For employee
+
+Route::post('/employee-login', [EmployeeController::class, 'Login']);
+Route::post('/employee-logout', [EmployeeController::class, 'Logout']);
+
+Route::middleware([TokenVerificationAPIMiddleware::class])->group(function () {
+    Route::post('/employee-register', [EmployeeController::class, 'Register']);
+    Route::get('/employee-profile', [EmployeeController::class, 'Profile']);
 });

@@ -69,7 +69,10 @@ class UserController extends Controller
     }
     function UserLogout(Request $request)
     {
-        return redirect('/')->cookie('token', '', -1);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out successfully'
+        ])->cookie('token', '', -1);
     }
     function SendOTPCode(Request $request)
     {

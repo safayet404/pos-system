@@ -14,14 +14,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// For User 
+
 Route::post('/user-registration', [UserController::class, 'UserRegistration']);
 Route::post('/user-login', [UserController::class, 'UserLogin']);
 Route::get('/user-logout', [UserController::class, 'UserLogout']);
 Route::get('/send-otp', [UserController::class, 'SendOTPCode']);
-Route::post('/reset-password', [UserController::class, 'ResetPassword'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/verify-otp', [UserController::class, 'VerifyOTP']);
-Route::get('/user-profile', [UserController::class, 'UserProfile'])->middleware([TokenVerificationMiddleware::class]);
-Route::put('/user-update', [UserController::class, 'UpdateProfile'])->middleware([TokenVerificationMiddleware::class]);
+
+Route::middleware([TokenVerificationMiddleware::class])->group(function () {
+    Route::post('/reset-password', [UserController::class, 'ResetPassword']);
+    Route::get('/user-profile', [UserController::class, 'UserProfile']);
+    Route::put('/user-update', [UserController::class, 'UpdateProfile']);
+});
 
 
 // Routes for Category
@@ -66,6 +71,7 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/summary', [DashboardController::class, 'Summary']);
 });
+
 
 
 // For employee

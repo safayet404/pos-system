@@ -11,8 +11,7 @@ class EmployeeController extends Controller
 {
     public function Register(Request $request)
     {
-        $userId = $request->header('id'); // logged-in owner
-
+        $userId = $request->header('id');
         $request->validate([
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:employees,email',
@@ -73,10 +72,10 @@ class EmployeeController extends Controller
 
     public function Logout(Request $request)
     {
-        // Clear the token cookie by setting it with a past expiration date
+
         return response()->json([
             'status' => 'success',
             'message' => 'Logged out successfully'
-        ])->cookie('token', '', -1); // expires immediately
+        ])->cookie('token', '', -1);
     }
 }
