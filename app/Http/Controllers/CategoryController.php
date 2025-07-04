@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+
+    function CategoryPage()
+    {
+        return Inertia::render('CategoryPage');
+    }
     function CategoryList(Request $request)
     {
         $user_id = $request->header('id');

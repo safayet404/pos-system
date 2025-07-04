@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+
+    function ProductPage()
+    {
+        return Inertia::render('ProductPage');
+    }
     function ProductCreate(Request $request)
     {
         try {

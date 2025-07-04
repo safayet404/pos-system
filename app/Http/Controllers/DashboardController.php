@@ -7,9 +7,15 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    function DashboardPage()
+    {
+        return Inertia::render('DashboardPage');
+    }
+
     function Summary(Request $request)
     {
         $user_id = $request->header('id');

@@ -1,12 +1,12 @@
 <script setup>
 import NavLayout from '../Layouts/NavLayout.vue';
-import LoginForm from '../Components/Auth/LoginForm.vue';
+import VerifyOTPForm from '../Components/Auth/VerifyOTPForm.vue';
 
 </script>
 
 <template>
   <NavLayout>
-    <LoginForm></LoginForm>
+    <VerifyOTPForm></VerifyOTPForm>
   </NavLayout>
 </template>
 

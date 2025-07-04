@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h1>This is VerifyOtp</h1>
+  <h1>This is ProductCreateForm</h1>
 </template>
 
 <style scoped>

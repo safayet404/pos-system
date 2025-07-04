@@ -1,12 +1,12 @@
 <script setup>
 import NavLayout from '../Layouts/NavLayout.vue';
-import LoginForm from '../Components/Auth/LoginForm.vue';
+import ResetPasswordForm from '../Components/Auth/ResetPasswordForm.vue';
 
 </script>
 
 <template>
   <NavLayout>
-    <LoginForm></LoginForm>
+    <ResetPasswordForm></ResetPasswordForm>
   </NavLayout>
 </template>
 

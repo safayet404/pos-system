@@ -11,9 +11,29 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Support\Facades\Route;
 
-// Laravel Vue Page Routing
+// Laravel Vue Login Page Routing
 
-Route::get('/', [HomeController::class, 'HomePage']);
+Route::get('/', [HomeController::class, 'HomePage'])->name('HomePage');
+Route::get('/LoginPage', [UserController::class, 'LoginPage'])->name('HomePage');
+Route::get('/RegistrationPage', [UserController::class, 'RegistrationPage'])->name('RegistrationPage');
+Route::get('/ResetPasswordPage', [UserController::class, 'ResetPasswordPage'])->name('ResetPasswordPage');
+Route::get('/SendOtpPage', [UserController::class, 'SendOtpPage'])->name('ResetPasswordPage');
+Route::get('/VerifyOtpPage', [UserController::class, 'VerifyOtpPage'])->name('VerifyOtpPage');
+Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('ProfilePage');
+
+
+
+// Laravel Vue Dashboard Page Routing
+
+
+Route::get('/DashboardPage', [DashboardController::class, 'DashboardPage'])->name('DashboardPage');
+Route::get('/CategoryPage', [CategoryController::class, 'CategoryPage'])->name('CategoryPage');
+Route::get('/CustomerPage', [CustomerController::class, 'CustomerPage'])->name('CustomerPage');
+Route::get('/ProductPage', [ProductController::class, 'ProductPage'])->name('ProductPage');
+Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('ProfilePage');
+Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');
+Route::get('/InvoiceListPage', [InvoiceController::class, 'InvoiceListPage'])->name('InvoiceListPage');
+
 
 // For User 
 

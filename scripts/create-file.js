@@ -2,29 +2,30 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Required to resolve __dirname in ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// CLI args
+// Parse CLI args
 const args = process.argv.slice(2);
 const typeArg = args.find(arg => arg.startsWith('--type='));
-const name = args.find(arg => !arg.startsWith('--'));
+const rawName = args.find(arg => !arg.startsWith('--'));
 
-if (!typeArg || !name) {
-  console.log('❌ Usage: node scripts/create-file.js --type=component FileName');
+if (!typeArg || !rawName) {
+  console.log('❌ Usage: node scripts/create-file.js --type=component Folder/FileName');
   process.exit(1);
 }
 
 const type = typeArg.split('=')[1];
 
-// Map file types to folders
 const folders = {
   page: 'Pages',
   component: 'Components',
   layout: 'Layouts',
   store: 'Stores',
-  util: 'Utility',
-  composable: 'Composables'
+  util: 'Utils',
+  composable: 'Composables',
+  api: 'APIRequest'
 };
 
 const folderName = folders[type];
@@ -34,11 +35,23 @@ if (!folderName) {
   process.exit(1);
 }
 
-const ext = type === 'util' || type === 'composable' || type === 'store' ? 'js' : 'vue';
-const fileName = `${name}.${ext}`;
-const filePath = path.join(__dirname, `../resources/js/${folderName}`, fileName);
+// Parse folder + filename
+const parsedPath = path.parse(rawName);
+const name = parsedPath.name;
+const subFolder = parsedPath.dir;
 
-// Templates
+const ext = ['util', 'composable', 'store', 'api'].includes(type) ? 'js' : 'vue';
+
+// Construct paths
+const fileDir = path.join(__dirname, `../resources/js/${folderName}`, subFolder);
+const filePath = path.join(fileDir, `${name}.${ext}`);
+
+// Create folder if needed
+if (!fs.existsSync(fileDir)) {
+  fs.mkdirSync(fileDir, { recursive: true });
+}
+
+// File templates
 const templates = {
   vue: `<script setup>
 
@@ -56,10 +69,16 @@ const templates = {
 export default function ${name}() {
   // ...
 }
-`
+`,
+  empty: ''
 };
 
-const content = ext === 'vue' ? templates.vue : templates.js;
+// Determine content
+const content =
+  type === 'api' ? templates.empty :
+    ext === 'vue' ? templates.vue :
+      templates.js;
 
+// Write the file
 fs.writeFileSync(filePath, content);
-console.log(`✅ Created ${type} -> ${fileName} in resources/js/${folderName}`);
+console.log(`✅ Created ${type} → ${rawName}.${ext} in resources/js/${folderName}`);

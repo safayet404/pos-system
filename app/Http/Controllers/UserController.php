@@ -14,9 +14,44 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Arr;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
+
+
+
+
+
+    function LoginPage()
+    {
+        return Inertia::render('LoginPage');
+    }
+    function RegistrationPage()
+    {
+        return Inertia::render('RegistrationPage');
+    }
+
+    function ResetPasswordPage()
+    {
+        return Inertia::render('ResetPasswordPage');
+    }
+
+    function  SendOtpPage()
+    {
+        return Inertia::render('SendOtpPage');
+    }
+    function VerifyOtpPage()
+    {
+        return Inertia::render('VerifyOtpPage');
+    }
+    function ProfilePage()
+    {
+        return Inertia::render('ProfilePage');
+    }
+
+
+
 
     function UserRegistration(Request $request)
     {

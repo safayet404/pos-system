@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Exception;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
+
+    function CustomerPage()
+    {
+        return Inertia::render('CustomerPage');
+    }
+
+
     public function CustomerCreate(Request $request)
     {
         try {

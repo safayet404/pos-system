@@ -1,9 +1,14 @@
 <script setup>
+import NavLayout from '../Layouts/NavLayout.vue';
+import LoginForm from '../Components/Auth/LoginForm.vue';
+import RegistrationForm from '../Components/Auth/RegistrationForm.vue';
 
 </script>
 
 <template>
-  <h1>This is RegistrationPage</h1>
+  <NavLayout>
+    <RegistrationForm ></RegistrationForm>
+  </NavLayout>
 </template>
 
 <style scoped>

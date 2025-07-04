@@ -1,9 +1,12 @@
 <script setup>
-
+import NavLayout from '../Layouts/NavLayout.vue';
+import SendOTPForm from '../Components/Auth/SendOTPForm.vue';
 </script>
 
 <template>
-  <h1>This is SendOtpPage</h1>
+  <NavLayout>
+    <SendOTPForm></SendOTPForm>
+  </NavLayout>
 </template>
 
 <style scoped>
