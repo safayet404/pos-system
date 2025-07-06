@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UnifiedLogin;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,9 @@ Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('Profil
 Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');
 Route::get('/InvoiceListPage', [InvoiceController::class, 'InvoiceListPage'])->name('InvoiceListPage');
 
+// Unified Login
+
+Route::post('/login', [UnifiedLogin::class, 'UnifiedLogin']);
 
 // For User 
 
