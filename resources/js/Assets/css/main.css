@@ -23,3 +23,7 @@
     align-items: center;
     min-height: 85vh;
 }
+
+.theme-color {
+    background-color: #001529;
+}

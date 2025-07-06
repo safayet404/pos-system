@@ -24,13 +24,11 @@ class UnifiedLogin extends Controller
 
         $user = User::where('email', $email)->select('id', 'password')->first();
 
+
+
         if ($user && Hash::check($password, $user->password)) {
 
-            $email = $validated['email'];
-            $id = $user->id;
 
-            $request->session()->put('email', $email);
-            $request->session()->put('id', $id);
             $token = JWTToken::CreateToken($email, $user->id);
 
             return Redirect::to('/dashboard')->withCookie(cookie('token', $token, 60 * 24 * 30));
@@ -40,21 +38,16 @@ class UnifiedLogin extends Controller
         $employee = Employee::where('email', $request->email)->first();
 
         if ($employee && Hash::check($request->password, $employee->password)) {
-            $email = $validated['email'];
-            $id = $employee->id;
 
-            $request->session()->put('email', $email);
-            $request->session()->put('id', $id);
             $token = JWTToken::CreateEmployeeToken($employee->email, $employee->id, $employee->user_id);
 
 
             return Redirect::to('/dashboard')->withCookie(cookie('token', $token, 60 * 24 * 30));
         }
 
-        return response()->json([
-            'status' => 'failed',
-            'message' => 'Invalid credentials'
-        ], 401);
+
+
+        return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
     function UnifiedLogout(Request $request)

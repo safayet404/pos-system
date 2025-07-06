@@ -1,52 +1,52 @@
 <template>
   <div>
-      <nav id="topNav" class="navbar fixed-top bg-success top-navbar">
+      <nav id="topNav" class="navbar fixed-top  top-navbar">
           <div class="container-fluid">
               <a id="MenuBar" @click="NavOpenClose" class="icon-nav mx-0 my-1 h5">
-                  <i class="fa text-white fa-bars"></i>
+                  <i class="fa  fa-bars"></i>
               </a>
           </div>
       </nav>
       <div id="sideNav" class="side-nav-open">
           
 
-          <Link href="/DashboardPage" class="side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-tachometer-alt text-green"/></span>
+          <Link href="/dashboard" class="side-bar-item">
+              <span class="side-bar-item-icon"><i class="fa fa-tachometer-alt text-white"/></span>
               <span class="side-bar-item-caption">Dashboard</span>
           </Link>
 
           <Link href="/CategoryPage" class="side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-th-list text-green"/></span>
+              <span class="side-bar-item-icon"><i class="fa fa-th-list text-white"/></span>
               <span class="side-bar-item-caption">Category</span>
           </Link>
 
           <Link href="/CustomerPage" class="side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-users text-green"/></span>
+              <span class="side-bar-item-icon"><i class="fa fa-users text-white"/></span>
               <span class="side-bar-item-caption">Customer</span>
           </Link>
 
           <Link href="/ProductPage" class="side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-box text-green"/></span>
+              <span class="side-bar-item-icon"><i class="fa fa-box text-white"/></span>
               <span class="side-bar-item-caption">Product</span>
           </Link>
 
           <Link href="/SalePage" class="side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-shopping-cart text-green"/></span>
+              <span class="side-bar-item-icon"><i class="fa fa-shopping-cart text-white"/></span>
               <span class="side-bar-item-caption">Create Sale</span>
           </Link>
 
           <Link href="/InvoiceListPage" class="side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-file-invoice-dollar text-green"/></span>
+              <span class="side-bar-item-icon"><i class="fa fa-file-invoice-dollar text-white"/></span>
               <span class="side-bar-item-caption">Invoice</span>
           </Link>
 
           <Link href="/ProfilePage" class="side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-user-circle text-green"/></span>
+              <span class="side-bar-item-icon"><i class="fa fa-user-circle text-white"/></span>
               <span class="side-bar-item-caption">Profile</span>
           </Link>
 
           <button @click="logout" class="reset-button side-bar-item">
-              <span class="side-bar-item-icon"><i class="fa fa-sign-out-alt text-green"/></span>
+              <span class="side-bar-item-icon"><i class="fa fa-sign-out-alt text-white"/></span>
               <span class="side-bar-item-caption">Logout</span>
           </button>
 

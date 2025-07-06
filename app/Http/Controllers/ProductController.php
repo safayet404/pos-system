@@ -45,7 +45,7 @@ class ProductController extends Controller
     {
         $user_id = $request->header('id');
 
-        return Product::where('user_id', $user_id)->get();
+        return Product::with('category')->where('user_id', $user_id)->get();
     }
     function ProductDelete(Request $request)
     {
