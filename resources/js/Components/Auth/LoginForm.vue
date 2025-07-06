@@ -1,5 +1,17 @@
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, useForm, router } from '@inertiajs/vue3'
+const form = useForm({
+    email : '',
+    password : ''
+})
+
+function submit() {
+  router.post('/login', form.data(), {
+    onSuccess: () => {
+      router.get('/dashboard')
+    }
+  })
+}
 </script>
 
 <template>
@@ -7,23 +19,26 @@ import { Link } from '@inertiajs/vue3'
       <div class="row justify-content-center">
           <div class="col-md-7 animated fadeIn col-lg-6 center-screen">
               <div class="card w-90  p-4">
-                  <div class="card-body">
-                      <h4>SIGN IN</h4>
-                      <br/>
-                      <input id="email" placeholder="User Email" class="form-control" type="email"/>
-                      <br/>
-                      <input id="password" placeholder="User Password" class="form-control" type="password"/>
-                      <br/>
-                      <Link href="/DashboardPage"  class="btn w-100 btn-success">Next</Link>
-                      <hr/>
-                      <div class="float-end mt-3">
-                      <span>
-                          <Link class="text-center ms-3 h6" href="/RegistrationPage">Sign Up </Link>
-                          <span class="ms-1">|</span>
-                          <Link class="text-center ms-3 h6" href="/SendOtpPage">Forget Password</Link>
-                      </span>
-                      </div>
-                  </div>
+                <form @submit.prevent="submit">
+
+                    <div class="card-body">
+                        <h4>SIGN IN</h4>
+                        <br/>
+                        <input id="email" v-model="form.email" placeholder="User Email" class="form-control" type="email"/>
+                        <br/>
+                        <input id="password"  v-model="form.password" placeholder="User Password" class="form-control" type="password"/>
+                        <br/>
+                        <button type='submit'   class="btn w-100 btn-success">Next</button>
+                        <hr/>
+                        <div class="float-end mt-3">
+                        <span>
+                            <Link class="text-center ms-3 h6" href="/RegistrationPage">Sign Up </Link>
+                            <span class="ms-1">|</span>
+                            <Link class="text-center ms-3 h6" href="/SendOtpPage">Forget Password</Link>
+                        </span>
+                        </div>
+                    </div>
+                </form>
               </div>
           </div>
       </div>

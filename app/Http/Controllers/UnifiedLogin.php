@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class UnifiedLogin extends Controller
 {
@@ -26,11 +27,7 @@ class UnifiedLogin extends Controller
         if ($user && Hash::check($password, $user->password)) {
             $token = JWTToken::CreateToken($email, $user->id);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => "User Login Successfull",
-                'token' => $token
-            ])->cookie('token', $token,  60 * 24 * 30);
+            return Redirect::to('/dashboard')->withCookie(cookie('token', $token, 60 * 24 * 30));
         }
 
 
@@ -39,11 +36,7 @@ class UnifiedLogin extends Controller
         if ($employee && Hash::check($request->password, $employee->password)) {
             $token = JWTToken::CreateEmployeeToken($employee->email, $employee->id, $employee->user_id);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Employee login successful',
-                'token' => $token
-            ])->cookie('token', $token, 60 * 24 * 30);
+            return Redirect::to('/dashboard')->withCookie(cookie('token', $token, 60 * 24 * 30));
         }
 
         return response()->json([

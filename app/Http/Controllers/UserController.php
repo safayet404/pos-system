@@ -75,7 +75,7 @@ class UserController extends Controller
                 'password' => $validated['password']
             ]);
 
-            return response()->json(['status' => 'success', 'message' => 'User Registration Successfull']);
+            return redirect('/LoginPage')->with('success', 'User registered!');
         } catch (Exception $e) {
             return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
         }
