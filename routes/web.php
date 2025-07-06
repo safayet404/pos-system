@@ -30,14 +30,15 @@ Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('Profil
 
 // Laravel Vue Dashboard Page Routing
 
-
-Route::get('/dashboard', [DashboardController::class, 'DashboardPage'])->name('DashboardPage');
-Route::get('/CategoryPage', [CategoryController::class, 'CategoryPage'])->name('CategoryPage');
-Route::get('/CustomerPage', [CustomerController::class, 'CustomerPage'])->name('CustomerPage');
-Route::get('/ProductPage', [ProductController::class, 'ProductPage'])->name('ProductPage');
-Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('ProfilePage');
-Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');
-Route::get('/InvoiceListPage', [InvoiceController::class, 'InvoiceListPage'])->name('InvoiceListPage');
+Route::middleware([TokenVerificationMiddleware::class])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'DashboardPage'])->name('DashboardPage');
+    Route::get('/CategoryPage', [CategoryController::class, 'CategoryPage'])->name('CategoryPage');
+    Route::get('/CustomerPage', [CustomerController::class, 'CustomerPage'])->name('CustomerPage');
+    Route::get('/ProductPage', [ProductController::class, 'ProductPage'])->name('ProductPage');
+    Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');
+    Route::get('/InvoiceListPage', [InvoiceController::class, 'InvoiceListPage'])->name('InvoiceListPage');
+    Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('ProfilePage');
+});
 
 // Unified Login
 
