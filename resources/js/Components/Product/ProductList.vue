@@ -26,7 +26,9 @@
  <script setup>
  import { onMounted, ref } from "vue";
  
- 
+ const searchValue = ref("");
+const searchField = "name"; 
+
  const Header = [
      { text: "No", value: "no" },
      { text: "Name", value: "name"},

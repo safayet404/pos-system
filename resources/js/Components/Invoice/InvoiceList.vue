@@ -24,39 +24,53 @@
  </template>
  
  <script setup>
- import { ref } from "vue";
+ import { onMounted, ref } from "vue";
  
- 
+ const searchValue = ref("");
+const searchField = "product"; 
  const Header = [
      { text: "No", value: "no" },
      { text: "Name", value: "name"},
+     { text: "Product", value: "product"},
+     { text: "Qty", value: "qty"},
+     { text: "Sale Price", value: "price"},
+     { text: "Discount", value: "discount"},
+     { text: "Vat", value: "vat"},
+     { text: "Payable", value: "payable"},
+   
+    
      { text: "Action", value: "number"},
  ];
  
  
- const Item = ref([
-         { "no": "1", "name": "Fruits" },
-         { "no": "2", "name": "Vegetables" },
-         { "no": "3", "name": "Dairy Products" },
-         { "no": "4", "name": "Meat and Poultry" },
-         { "no": "5", "name": "Seafood" },
-         { "no": "6", "name": "Grains and Cereals" },
-         { "no": "7", "name": "Bakery and Pastry" },
-         { "no": "8", "name": "Beverages" },
-         { "no": "9", "name": "Snacks and Appetizers" },
-         { "no": "10", "name": "Spices and Herbs" },
-         { "no": "11", "name": "Sauces and Condiments" },
-         { "no": "12", "name": "Frozen Foods" },
-         { "no": "13", "name": "Canned and Preserved Foods" },
-         { "no": "14", "name": "Organic Foods" },
-         { "no": "15", "name": "Gluten-Free Products" },
-         { "no": "16", "name": "Vegan and Plant-Based Foods" },
-         { "no": "17", "name": "Sweets and Desserts" },
-         { "no": "18", "name": "Nuts and Seeds" },
-         { "no": "19", "name": "Oils and Fats" },
-         { "no": "20", "name": "Ready-to-Eat Meals" }
-     ]
- )
+const Item = ref([])
+onMounted(async () => {
+  try {
+    const res = await fetch('/invoice-list')
+    if (!res.ok) throw new Error('Failed to fetch customer')
+    const invoices = await res.json()
+
+    Item.value = invoices.map((item, index) => ({
+
+      id: item.id,
+      no : index + 1,
+      name: item.invoice.customer.name,
+      product: item.product.name,
+      qty: item.qty,
+      price: item.sale_price,
+      discount: item.invoice.discount,
+      vat: item.invoice.vat,
+      payable: item.invoice.payable,
+
+
+    }))
+    
+    
+  } catch (e)
+  {
+    console.log("Error fetching products",error)
+  }
+ })
  
  
  const itemClick = (number,player) => {
