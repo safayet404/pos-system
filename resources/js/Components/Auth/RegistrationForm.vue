@@ -8,6 +8,13 @@ const form = useForm({
     password: ''
 })
 
+const toast = useToaster();
+
+if (form.email.length == 0)
+{
+    toast.errors("Email Required")
+}
+
 function submit() {
  
     form.post('/user-registration', {

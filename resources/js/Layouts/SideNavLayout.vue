@@ -45,10 +45,10 @@
               <span class="side-bar-item-caption">Profile</span>
           </Link>
 
-          <Link href="/" class="side-bar-item">
+          <button @click="logout" class="reset-button side-bar-item">
               <span class="side-bar-item-icon"><i class="fa fa-sign-out-alt text-green"/></span>
               <span class="side-bar-item-caption">Logout</span>
-          </Link>
+          </button>
 
 
 
@@ -67,5 +67,23 @@
 
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
+
+function logout() {
+    router.post('/logout', {}, {
+        onSuccess: () => {
+            router.visit('/login-page')
+        }
+    })
+}
 </script>
+
+<style scoped>
+.reset-button {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  margin-left: 13px;
+  width: 100%;
+}
+</style>

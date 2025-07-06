@@ -42,8 +42,8 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 
 // Unified Login
 
-Route::post('/login', [UnifiedLogin::class, 'UnifiedLogin']);
-
+Route::post('/login', [UnifiedLogin::class, 'UnifiedLogin'])->name('login');
+Route::post('/logout', [UnifiedLogin::class, 'UnifiedLogout'])->name('logout');
 // For User 
 
 Route::post('/user-registration', [UserController::class, 'UserRegistration']);

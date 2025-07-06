@@ -56,4 +56,9 @@ class UnifiedLogin extends Controller
             'message' => 'Invalid credentials'
         ], 401);
     }
+
+    function UnifiedLogout(Request $request)
+    {
+        return Redirect::to('/login-page')->withCookie(cookie('token', '', -1));
+    }
 }
