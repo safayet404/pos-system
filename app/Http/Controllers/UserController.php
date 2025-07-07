@@ -46,9 +46,14 @@ class UserController extends Controller
     {
         return Inertia::render('VerifyOtpPage');
     }
-    function ProfilePage()
+
+    function ProfilePage(Request $request)
     {
-        return Inertia::render('ProfilePage');
+        $email = $request->header('email');
+        $user = User::where('email', $email)->first();
+        return Inertia::render('ProfilePage', [
+            'user' => $user
+        ]);
     }
 
 
@@ -204,28 +209,26 @@ class UserController extends Controller
     {
         try {
             $email = $request->header('email');
-
-            // Find the user by email
             $user = User::where('email', $email)->firstOrFail();
 
-            // Get only valid fields from request
+            // Validation (recommended)
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'mobile' => 'nullable|string|max:20',
+                'password' => 'nullable|string|min:6',
+            ]);
+
             $data = $request->only(['name', 'mobile', 'password']);
 
-            // If password is present, hash it
             if (!empty($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
             } else {
-                // If password not provided, remove from update data
                 unset($data['password']);
             }
 
-            // Fill and save only provided fields
             $user->fill($data)->save();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Profile updated successfully'
-            ], 200);
+            return redirect()->back()->with('message', 'Profile updated successfully');
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'fail',

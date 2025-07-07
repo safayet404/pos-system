@@ -24,7 +24,6 @@ Route::get('/RegistrationPage', [UserController::class, 'registration'])->name('
 Route::get('/reset-password-page', [UserController::class, 'ResetPasswordPage'])->name('reset-password-page');
 Route::get('/send-otp-page', [UserController::class, 'SendOtpPage'])->name('send-otp-page');
 Route::get('/verify-otp-page', [UserController::class, 'VerifyOtpPage'])->name('verify-otp-page');
-Route::get('/profile', [UserController::class, 'ProfilePage'])->name('profile');
 
 
 
@@ -37,7 +36,7 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/ProductPage', [ProductController::class, 'ProductPage'])->name('ProductPage');
     Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');
     Route::get('/InvoiceListPage', [InvoiceController::class, 'InvoiceListPage'])->name('InvoiceListPage');
-    Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('ProfilePage');
+    Route::get('/profile', [UserController::class, 'ProfilePage'])->name('profile');
 });
 
 // Unified Login
