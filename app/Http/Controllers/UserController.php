@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -75,7 +76,7 @@ class UserController extends Controller
                 'password' => $validated['password']
             ]);
 
-            return redirect('/LoginPage')->with('success', 'User registered!');
+            return redirect('/login-page')->with('success', 'User registered!');
         } catch (Exception $e) {
             return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
         }
@@ -109,76 +110,73 @@ class UserController extends Controller
             'message' => 'Logged out successfully'
         ])->cookie('token', '', -1);
     }
-    function SendOTPCode(Request $request)
+    public function SendOTPCode(Request $request)
     {
         $email = $request->input('email');
         $otp = rand(1000, 9999);
 
-        $count = User::where('email', '=', $email)->count();
+        $count = User::where('email', $email)->count();
 
         if ($count == 1) {
             try {
                 Mail::to($email)->send(new OTPMail($otp));
             } catch (\Exception $e) {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Mail sending failed: ' . $e->getMessage()
-                ], 500);
+                return Redirect::back()->withErrors([
+                    'email' => 'Mail sending failed: ' . $e->getMessage()
+                ]);
             }
 
-            User::where('email', '=', $email)->update(['otp' => $otp]);
+            User::where('email', $email)->update(['otp' => $otp]);
 
-            return response()->json([
-                'status' => 'success',
-                'message' =>  "4 Digit {$otp} Code has been sent to your email"
-            ]);
+            $data = ['message' => "Otp send successfully", 'status' => true, 'error' => ''];
+            $request->session()->put('email', $email);
+            return redirect('/verify-otp-page')->with('flash', $data);
         } else {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'unauthorized'
+            return Redirect::back()->withErrors([
+                'email' => 'Unauthorized email address'
             ]);
         }
     }
 
     function VerifyOTP(Request $request)
     {
-
-        $email = $request->input('email');
+        $email = $request->session()->get('email');
         $otp = $request->input('otp');
-        $count = User::where('email', '=', $email)->where('otp', '=', $otp)->count();
+        $count = User::where('email', '=', $email)
+            ->where('otp', '=', $otp)
+            ->count();
 
-        if ($count == 1) {
+        if ($count === 1) {
             User::where('email', '=', $email)->update(['otp' => '0']);
-
+            $request->session()->put('otp_verify', 'yes');
             $token = JWTToken::CreateTokenForSetPassword($email);
-            return response()->json([
-                'status' => 'success',
-                'message' => 'OTP Verification Successfull',
-                'token' => $token
-            ])->cookie('token', $token, 60 * 24 * 30);
-        } else {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'unauthorized',
 
-            ]);
+            return redirect('/reset-password-page')
+                ->with('message', 'OTP verification successful')
+                ->cookie('token', $token, 60 * 24 * 30);
+        } else {
+            return redirect()->back()
+                ->with('error', 'Invalid OTP, please try again');
         }
     }
+
     function ResetPassword(Request $request)
     {
 
         try {
 
-            $email = $request->input('email');
+            $email = $request->session()->get('email');
             $password = $request->input('password');
             $hashedPassword = Hash::make($password);
 
-            User::where('email', '=', $email)->update(['password' => $hashedPassword]);
+            $otp_verify = $request->session()->get('otp_verify', 'default');
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Request Successfull'
-            ]);
+            if ($otp_verify == "yes") {
+
+                User::where('email', '=', $email)->update(['password' => $hashedPassword]);
+                $request->session()->flush();
+                return redirect('/login-page')->with('message', 'Password updated successfully');
+            }
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'fail',
@@ -190,6 +188,8 @@ class UserController extends Controller
     {
         $email = $request->header('email');
         $user = User::where('email', '=', $email)->first();
+
+
 
         return response()->json([
             'status' => 'success',

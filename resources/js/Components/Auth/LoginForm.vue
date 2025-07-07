@@ -55,9 +55,9 @@ function submit() {
 
               <div class="float-end mt-3">
                 <span>
-                  <Link class="text-center ms-3 h6" href="/RegistrationPage">Sign Up</Link>
+                  <Link class="text-center ms-3 h6" href="/registration">Sign Up</Link>
                   <span class="ms-1">|</span>
-                  <Link class="text-center ms-3 h6" href="/SendOtpPage">Forget Password</Link>
+                  <Link class="text-center ms-3 h6" href="/send-otp-page">Forget Password</Link>
                 </span>
               </div>
             </div>

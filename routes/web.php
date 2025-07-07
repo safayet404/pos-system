@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 // Laravel Vue Login Page Routing
 
-Route::get('/', [HomeController::class, 'HomePage'])->name('HomePage');
-Route::get('/login-page', [UserController::class, 'LoginPage'])->name('LoginPage');
-Route::get('/RegistrationPage', [UserController::class, 'RegistrationPage'])->name('RegistrationPage');
-Route::get('/ResetPasswordPage', [UserController::class, 'ResetPasswordPage'])->name('ResetPasswordPage');
-Route::get('/SendOtpPage', [UserController::class, 'SendOtpPage'])->name('ResetPasswordPage');
-Route::get('/VerifyOtpPage', [UserController::class, 'VerifyOtpPage'])->name('VerifyOtpPage');
-Route::get('/ProfilePage', [UserController::class, 'ProfilePage'])->name('ProfilePage');
+Route::get('/', [HomeController::class, 'HomePage'])->name('home');
+Route::get('/login-page', [UserController::class, 'LoginPage'])->name('login-page');
+Route::get('/RegistrationPage', [UserController::class, 'registration'])->name('registratin');
+Route::get('/reset-password-page', [UserController::class, 'ResetPasswordPage'])->name('reset-password-page');
+Route::get('/send-otp-page', [UserController::class, 'SendOtpPage'])->name('send-otp-page');
+Route::get('/verify-otp-page', [UserController::class, 'VerifyOtpPage'])->name('verify-otp-page');
+Route::get('/profile', [UserController::class, 'ProfilePage'])->name('profile');
 
 
 
@@ -52,8 +52,8 @@ Route::get('/user-logout', [UserController::class, 'UserLogout']);
 Route::get('/send-otp', [UserController::class, 'SendOTPCode']);
 Route::get('/verify-otp', [UserController::class, 'VerifyOTP']);
 
+Route::post('/reset-password', [UserController::class, 'ResetPassword']);
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
-    Route::post('/reset-password', [UserController::class, 'ResetPassword']);
     Route::get('/user-profile', [UserController::class, 'UserProfile']);
     Route::put('/user-update', [UserController::class, 'UpdateProfile']);
 });
@@ -82,8 +82,8 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 // Routes for Product
 
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
-    Route::post('/create-product', [ProductController::class, 'ProductCreate']);
     Route::get('/list-product', [ProductController::class, 'ProductList']);
+    Route::post('/create-product', [ProductController::class, 'ProductCreate']);
     Route::post('/delete-product', [ProductController::class, 'ProductDelete']);
     Route::get('/product-by-id', [ProductController::class, 'ProductByID']);
     Route::post('/update-product', [ProductController::class, 'ProductUpdate']);

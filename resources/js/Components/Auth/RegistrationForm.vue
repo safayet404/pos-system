@@ -1,6 +1,7 @@
 
 <script setup>
 import { Link, useForm, router } from '@inertiajs/vue3'
+
 const form = useForm({
     email: '',
     name: '',
@@ -8,12 +9,7 @@ const form = useForm({
     password: ''
 })
 
-const toast = useToaster();
 
-if (form.email.length == 0)
-{
-    toast.errors("Email Required")
-}
 
 function submit() {
  
@@ -67,7 +63,7 @@ function submit() {
                             </div>
                             <div class="row m-0 p-0">
                                 <div class="col-md-4 p-2">
-                                    <button type="submit" href="/LoginPage"  class="btn mt-3 w-100  btn-success">Complete</button>
+                                    <button type="submit"  class="btn mt-3 w-100  btn-success">Complete</button>
                                 </div>
                             </div>
                         </div>
