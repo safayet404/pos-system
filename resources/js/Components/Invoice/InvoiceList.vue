@@ -33,13 +33,14 @@ const toaster = createToaster()
 const searchField = "product"; 
  const Header = [
      { text: "No", value: "no" },
-     { text: "ID", value: "id" },
+    //  { text: "ID", value: "id" },
      { text: "Name", value: "name"},
-     { text: "Product", value: "product"},
-     { text: "Qty", value: "qty"},
+     { text: "Mobile", value: "mobile"},
+    //  { text: "Product", value: "product"},
+    //  { text: "Qty", value: "qty"},
      { text: "Sale Price", value: "price"},
      { text: "Discount", value: "discount"},
-     { text: "Invoice ID", value: "invoice_id"},
+    //  { text: "Invoice ID", value: "invoice_id"},
      { text: "Vat", value: "vat"},
      { text: "Payable", value: "payable"},
      { text: "Action", value: "number"},
@@ -58,11 +59,12 @@ onMounted(async () => {
     Item.value = invoices.map((item, index) => ({
 
       id: item.id,
-      invoice_id : item.invoice_id,
+     
       no : index + 1,
       name: item.invoice.customer.name,
-      product: item.product.name,
-      qty: item.qty,
+      mobile: item.invoice.customer.mobile,
+     
+    
       price: item.sale_price,
       discount: item.invoice.discount,
       vat: item.invoice.vat,

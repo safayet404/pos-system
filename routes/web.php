@@ -32,6 +32,7 @@ Route::get('/verify-otp-page', [UserController::class, 'VerifyOtpPage'])->name('
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'DashboardPage'])->name('DashboardPage');
     Route::get('/CategoryPage', [CategoryController::class, 'CategoryPage'])->name('CategoryPage');
+    Route::get('/category-save', [CategoryController::class, 'CategorySavePage'])->name('category-save');
     Route::get('/CustomerPage', [CustomerController::class, 'CustomerPage'])->name('CustomerPage');
     Route::get('/ProductPage', [ProductController::class, 'ProductPage'])->name('ProductPage');
     Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');

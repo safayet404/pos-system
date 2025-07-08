@@ -17,6 +17,20 @@ class CategoryController extends Controller
         $list = Category::with('user:id,name')->where('user_id', $user_id)->get();
         return Inertia::render('CategoryPage', ['list' => $list]);
     }
+    function CategorySavePage(Request $request)
+    {
+        $user_id = $request->header('id');
+
+        $category_id = $request->query('id');
+        if ($category_id != 0) {
+            $list = Category::where('id', $category_id)->where('user_id', $user_id)->first();
+            return Inertia::render('CategorySavePage', ['list' => $list]);
+        } else {
+
+            return Inertia::render('CategorySavePage');
+        }
+        // $list = Category::with('user:id,name')->where('user_id', $user_id)->get();
+    }
     function CategoryList(Request $request)
     {
         $user_id = $request->header('id');
@@ -29,10 +43,12 @@ class CategoryController extends Controller
             'name' => 'required|string|max:50'
         ]);
 
-        return Category::create([
+        Category::create([
             'name' => $validated['name'],
             'user_id' => $user_id
         ]);
+
+        return redirect()->back()->with('success', 'Category created successfully.');
     }
 
     function CategoryDelete(Request $request)
@@ -88,10 +104,7 @@ class CategoryController extends Controller
 
             $category->fill($data)->save();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Category updated successfully'
-            ], 200);
+            return redirect()->back()->with('success', 'Category Updated successfully.');
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'fail',

@@ -14,12 +14,16 @@
               <span class="side-bar-item-icon"><i class="fa fa-tachometer-alt text-white"/></span>
               <span class="side-bar-item-caption">Dashboard</span>
           </Link>
+          <Link href="/category-save" class="side-bar-item">
+              <span class="side-bar-item-icon"><i class="fa fa-th-list text-white"/></span>
+              <span class="side-bar-item-caption">Category Create</span>
+          </Link>
 
           <Link href="/CategoryPage" class="side-bar-item">
               <span class="side-bar-item-icon"><i class="fa fa-th-list text-white"/></span>
               <span class="side-bar-item-caption">Category</span>
           </Link>
-
+          
           <Link href="/CustomerPage" class="side-bar-item">
               <span class="side-bar-item-icon"><i class="fa fa-users text-white"/></span>
               <span class="side-bar-item-caption">Customer</span>
