@@ -63,7 +63,7 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::post('/create-category', [CategoryController::class, 'CategoryCreate']);
     Route::get('/list-category', [CategoryController::class, 'CategoryList']);
-    Route::post('/delete-category', [CategoryController::class, 'CategoryDelete']);
+    Route::post('/delete-category/{id}', [CategoryController::class, 'CategoryDelete']);
     Route::get('/category-by-id', [CategoryController::class, 'CategoryByID']);
     Route::post('/update-category', [CategoryController::class, 'CategoryUpdate']);
 });
@@ -74,7 +74,7 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::post('/create-customer', [CustomerController::class, 'CustomerCreate']);
     Route::get('/list-customer', [CustomerController::class, 'CustomerList']);
-    Route::post('/delete-customer', [CustomerController::class, 'CustomerDelete']);
+    Route::post('/delete-customer/{id}', [CustomerController::class, 'CustomerDelete']);
     Route::get('/customer-by-id', [CustomerController::class, 'CustomerByID']);
     Route::post('/update-customer', [CustomerController::class, 'CustomerUpdate']);
 });

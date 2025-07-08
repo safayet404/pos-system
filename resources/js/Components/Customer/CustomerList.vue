@@ -9,9 +9,9 @@
            <div>
              <input placeholder="Search..." class="form-control mb-2 w-auto form-control-sm" type="text" v-model="searchValue">
                          <EasyDataTable buttons-pagination alternating :headers="Header" :items="Item" :rows-per-page="10" :search-field="searchField" :search-value="searchValue">
-               <template #item-number="{ number,player }">
+               <template #item-number="{ id,player }">
                  <button class="btn btn-success mx-3 btn-sm" @click="itemClick(3,player)">Edit</button>
-                 <button class="btn btn-danger mx-3 btn-sm" @click="itemClick(number,player)">Delete</button>
+                 <button class="btn btn-danger mx-3 btn-sm" @click="DeleteClick(id)">Delete</button>
                
                </template>
              </EasyDataTable>
@@ -24,9 +24,18 @@
  </template>
  
  <script setup>
- import { onMounted, ref } from "vue";
- 
- const searchValue = ref("");
+ import { router, usePage } from "@inertiajs/vue3";
+import { ref } from "vue";
+import { createToaster } from "@meforma/vue-toaster";
+
+const toaster = createToaster()
+
+
+const page = usePage()
+const customer = page?.props?.list
+console.log("customers",customer);
+
+const searchValue = ref("");
 const searchField = "name"; 
  const Header = [
      { text: "No", value: "no" },
@@ -38,31 +47,22 @@ const searchField = "name";
  ];
  
  
-const Item = ref([])
-onMounted(async () => {
-  try {
-    const res = await fetch('/list-customer')
-    if (!res.ok) throw new Error('Failed to fetch customer')
-    const customers = await res.json()
+const Item = ref(customer)
 
-    Item.value = customers.map((item, index) => ({
+const DeleteClick = (id) => {
+  let text = "Do you want to delete"
 
-      id: item.id,
-      no : index + 1,
-      name: item.name,
-      email: item.email,
-      mobile: item.mobile,
-
-
-    }))
-    
-    
-  } catch (e)
+  if (confirm(text) === true)
   {
-    console.log("Error fetching products",error)
-  }
- })
- 
+    router.post(`/delete-customer/${id}`, {}, {
+      onSuccess: () => {
+        toaster.success("Customer Deleted Successfully")
+        Item.value = Item.value.filter(item => item.id !== id)
+      
+    }
+  })
+}
+}
  
  const itemClick = (number,player) => {
      alert(`Number is=${number} & Player Name is=${player}`)

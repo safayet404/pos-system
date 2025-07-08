@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
 
-    function CustomerPage()
+    function CustomerPage(Request $request)
     {
-        return Inertia::render('CustomerPage');
+        $user_id = $request->header('id');
+        $list = Customer::where('user_id', $user_id)->get();
+        return Inertia::render('CustomerPage', ['list' => $list]);
     }
 
 
@@ -55,13 +58,17 @@ class CustomerController extends Controller
     function CustomerDelete(Request $request)
     {
         $user_id = $request->header('id');
-        $customer_id = $request->input('id');
+        $customer_id = $request->id;
 
         $customer = Customer::where('id', $customer_id)->where('user_id', $user_id)->first();
 
         if ($customer) {
+            $customer->delete();
 
-            return Customer::where('id', $customer_id)->where('user_id', $user_id)->delete();
+            return Redirect::back()->with([
+                'status' => true,
+                'message' => 'Customer Deleted Successfully'
+            ]);
         } else {
             return response()->json(['status' => 'failed', 'message' => "This user is not exist in the system"]);
         }

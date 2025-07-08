@@ -7,7 +7,6 @@ import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 import NProgress from 'nprogress'
 import { router } from '@inertiajs/vue3'
-import Toaster from '@meforma/vue-toaster';
 
 createInertiaApp({
     resolve: name => {
@@ -18,10 +17,7 @@ createInertiaApp({
         const app = createApp({ render: () => h(App, props) })
 
         app.use(plugin)
-        app.use(Toaster, {
-            position: 'top-right',
-            duration: 4000,
-        })
+
         app.component('EasyDataTable', Vue3EasyDataTable)
         app.mount(el)
     },

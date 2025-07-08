@@ -1,10 +1,11 @@
 
 <script setup>
 import { Link, useForm, router, usePage } from '@inertiajs/vue3'
-
+import { createToaster } from "@meforma/vue-toaster";
 const page = usePage()
 const user = page.props.user || {}
-console.log("user data",user);
+console.log("user data", user);
+const toaster = createToaster()
 
 
 const form = useForm({
@@ -16,11 +17,12 @@ const form = useForm({
 
 
 
+
 function submit() {
  
     form.put('/user-update', {
   onSuccess: () => {
-    alert("Profile Updated")
+   toaster.success("updated")
   },
   onError: (errors) => {
     console.log('Validation Errors:', errors);

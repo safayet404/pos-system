@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
 
-    function CategoryPage()
+    function CategoryPage(Request $request)
     {
-        return Inertia::render('CategoryPage');
+        $user_id = $request->header('id');
+        $list = Category::with('user:id,name')->where('user_id', $user_id)->get();
+        return Inertia::render('CategoryPage', ['list' => $list]);
     }
     function CategoryList(Request $request)
     {
@@ -31,17 +34,25 @@ class CategoryController extends Controller
             'user_id' => $user_id
         ]);
     }
+
     function CategoryDelete(Request $request)
     {
-        $category_id = $request->input('id');
+        $category_id = $request->id;
         $user_id = $request->header('id');
 
         $category = Category::where('id', $category_id)->where('user_id', $user_id)->first();
 
         if ($category) {
-            return Category::where('id', $category_id)->where('user_id', $user_id)->delete();
+            $category->delete();
+            return Redirect::back()->with([
+                'status' => true,
+                'message' => 'Category deleted successfully!'
+            ]);
         } else {
-            return response()->json(['status' => 'failed', 'message' => "This category is not exist in the system"]);
+            return Redirect::back()->with([
+                'status' => false,
+                'message' => 'This category does not exist in the system!'
+            ]);
         }
     }
     function CategoryByID(Request $request)
