@@ -8,6 +8,7 @@ use App\Models\InvoiceProduct;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class InvoiceController extends Controller
@@ -16,6 +17,7 @@ class InvoiceController extends Controller
 
     function InvoiceListPage()
     {
+
         return Inertia::render('InvoiceListPage');
     }
     function SalePage()
@@ -112,24 +114,19 @@ class InvoiceController extends Controller
     }
 
 
-    function InvoiceDelete(Request $request)
+    public function InvoiceDelete(Request $request)
     {
         DB::beginTransaction();
         try {
             $user_id = $request->header('id');
 
-            $validated = $request->validate([
-                'inv_id' => 'required|exists:invoices,id'
-            ]);
 
-            $invoice_id = $validated['inv_id'];
-
-            // Delete related invoice products
+            $invoice_id = request()->invoice_id;
             InvoiceProduct::where('invoice_id', $invoice_id)
                 ->where('user_id', $user_id)
                 ->delete();
 
-            // Delete invoice itself
+            // Delete the invoice
             $deleted = Invoice::where('id', $invoice_id)
                 ->where('user_id', $user_id)
                 ->delete();
@@ -140,17 +137,17 @@ class InvoiceController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                "status" => "success",
-                "message" => "Invoice deleted"
-            ], 200);
-        } catch (Exception $e) {
+            return Redirect::back()->with([
+                'status' => true,
+                'message' => "Invoice deleted successfully"
+            ]);
+        } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Invoice deletion failed',
-                'error' => $e->getMessage()
-            ], 500);
+
+            return back()->with([
+                'status' => false,
+                'message' => 'Invoice deletion failed: ' . $e->getMessage()
+            ]);
         }
     }
 }

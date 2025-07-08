@@ -83,7 +83,7 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/list-product', [ProductController::class, 'ProductList']);
     Route::post('/create-product', [ProductController::class, 'ProductCreate']);
-    Route::post('/delete-product', [ProductController::class, 'ProductDelete']);
+    Route::post('/delete-product/{id}', [ProductController::class, 'ProductDelete']);
     Route::get('/product-by-id', [ProductController::class, 'ProductByID']);
     Route::post('/update-product', [ProductController::class, 'ProductUpdate']);
 });
@@ -93,7 +93,8 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::post('/create-invoice', [InvoiceController::class, 'CreateInvoice']);
     Route::get('/select-invoice', [InvoiceController::class, 'SelectInvoice']);
     Route::get('/invoice-list', [InvoiceController::class, 'InvoiceList']);
-    Route::post('/delete-invoice', [InvoiceController::class, 'InvoiceDelete']);
+    Route::post('/delete-invoice/{invoice_id}', [InvoiceController::class, 'InvoiceDelete']);
+
     Route::get('/invoice-details', [InvoiceController::class, 'InvoiceDetails']);
 });
 // Routes for Dashboard

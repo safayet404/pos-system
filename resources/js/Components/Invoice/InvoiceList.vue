@@ -9,9 +9,9 @@
            <div>
              <input placeholder="Search..." class="form-control mb-2 w-auto form-control-sm" type="text" v-model="searchValue">
                          <EasyDataTable buttons-pagination alternating :headers="Header" :items="Item" :rows-per-page="10" :search-field="searchField" :search-value="searchValue">
-               <template #item-number="{ number,player }">
+               <template #item-number="{ id,invoice_id,player }">
                  <button class="btn btn-success mx-3 btn-sm" @click="itemClick(3,player)">Edit</button>
-                 <button class="btn btn-danger mx-3 btn-sm" @click="itemClick(number,player)">Delete</button>
+                 <button class="btn btn-danger mx-3 btn-sm" @click="DeleteClick(id,invoice_id)">Delete</button>
                
                </template>
              </EasyDataTable>
@@ -24,21 +24,24 @@
  </template>
  
  <script setup>
- import { onMounted, ref } from "vue";
- 
+import { onMounted, ref } from "vue";
+import { router } from "@inertiajs/vue3";
+
+import { createToaster } from "@meforma/vue-toaster";
+const toaster = createToaster()
  const searchValue = ref("");
 const searchField = "product"; 
  const Header = [
      { text: "No", value: "no" },
+     { text: "ID", value: "id" },
      { text: "Name", value: "name"},
      { text: "Product", value: "product"},
      { text: "Qty", value: "qty"},
      { text: "Sale Price", value: "price"},
      { text: "Discount", value: "discount"},
+     { text: "Invoice ID", value: "invoice_id"},
      { text: "Vat", value: "vat"},
      { text: "Payable", value: "payable"},
-   
-    
      { text: "Action", value: "number"},
  ];
  
@@ -49,10 +52,13 @@ onMounted(async () => {
     const res = await fetch('/invoice-list')
     if (!res.ok) throw new Error('Failed to fetch customer')
     const invoices = await res.json()
+  console.log("invoices",invoices);
+  
 
     Item.value = invoices.map((item, index) => ({
 
       id: item.id,
+      invoice_id : item.invoice_id,
       no : index + 1,
       name: item.invoice.customer.name,
       product: item.product.name,
@@ -70,9 +76,22 @@ onMounted(async () => {
   {
     console.log("Error fetching products",error)
   }
- })
- 
- 
+})
+
+const DeleteClick = (id,invoice_id) => {
+  let text = "Do you want to delete this?"
+
+  if (confirm(text) === true)
+  {
+    router.post(`/delete-invoice/${invoice_id}`, {}, {
+      onSuccess: () => {
+        toaster.success("Invoice Deleted successfully!")
+      Item.value = Item.value.filter(item => item.id !== id)
+    }
+  })
+}
+}
+
  const itemClick = (number,player) => {
      alert(`Number is=${number} & Player Name is=${player}`)
  }

@@ -2,10 +2,9 @@
 <script setup>
 import { Link, useForm, router, usePage } from '@inertiajs/vue3'
 import { createToaster } from "@meforma/vue-toaster";
+const toaster = createToaster()
 const page = usePage()
 const user = page.props.user || {}
-console.log("user data", user);
-const toaster = createToaster()
 
 
 const form = useForm({
