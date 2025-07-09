@@ -15,10 +15,13 @@ class InvoiceController extends Controller
 {
 
 
-    function InvoiceListPage()
+    function InvoiceListPage(Request $request)
     {
+        $user_id = $request->header('id');
 
-        return Inertia::render('InvoiceListPage');
+        $list =  InvoiceProduct::with(['product', 'invoice.customer'])->where('user_id', $user_id)->get();
+
+        return Inertia::render('InvoiceListPage',['list' => $list]);
     }
     function SalePage()
     {

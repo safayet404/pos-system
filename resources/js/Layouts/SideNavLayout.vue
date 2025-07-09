@@ -1,6 +1,12 @@
 <template>
     <div>
-        <nav id="topNav" class="navbar fixed-top top-navbar">
+        <nav
+            :class="[
+                'navbar fixed-top',
+                isOpen ? 'top-navbar' : 'top-navbar-expand',
+            ]"
+            id="topNav"
+        >
             <div class="container-fluid">
                 <a
                     id="MenuBar"
@@ -9,9 +15,18 @@
                 >
                     <i class="fa fa-bars"></i>
                 </a>
+
+                <button @click="logout" class="btn btn-danger">
+                    <span class="side-bar-item-icon"
+                        ><i class="fa fa-sign-out-alt text-white"
+                    /></span>
+                    <span class="">Logout</span>
+                </button>
             </div>
         </nav>
-        <div id="sideNav" class="side-nav-open">
+
+        <div :class="isOpen ? 'side-nav-open' : 'side-nav-close'" id="sideNav">
+            <!-- Sidebar links -->
             <Link href="/dashboard" class="side-bar-item">
                 <span class="side-bar-item-icon"
                     ><i class="fa fa-tachometer-alt text-white"
@@ -79,6 +94,7 @@
                 <span class="side-bar-item-caption">Profile</span>
             </Link>
 
+            <!-- Add your other links here -->
             <button @click="logout" class="reset-button side-bar-item">
                 <span class="side-bar-item-icon"
                     ><i class="fa fa-sign-out-alt text-white"
@@ -86,7 +102,8 @@
                 <span class="side-bar-item-caption">Logout</span>
             </button>
         </div>
-        <div id="content" class="content">
+
+        <div :class="isOpen ? 'content' : 'content-expand'" id="content">
             <div class="container-fluid">
                 <main>
                     <slot></slot>
@@ -98,7 +115,12 @@
 
 <script setup>
 import { Link, router } from "@inertiajs/vue3";
+import { ref } from "vue";
+const isOpen = ref(true);
 
+function NavOpenClose() {
+    isOpen.value = !isOpen.value;
+}
 function logout() {
     router.post(
         "/logout",

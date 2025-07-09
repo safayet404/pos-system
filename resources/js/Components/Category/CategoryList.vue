@@ -3,7 +3,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="wrapper"></div>
                     <div class="card-body">
                         <div>
                             <div class="d-flex justify-content-between py-2">
@@ -56,6 +55,7 @@
 <script setup>
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
+import CategoryCreateForm from "./CategoryCreateForm.vue";
 const page = usePage();
 const category = page?.props?.list;
 

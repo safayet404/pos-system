@@ -57,6 +57,7 @@ import { createToaster } from "@meforma/vue-toaster";
 const toaster = createToaster();
 
 import { ref } from "vue";
+import InvoiceList from "../Invoice/InvoiceList.vue";
 
 const urlParams = new URLSearchParams(window.location.search);
 let id = ref(parseInt(urlParams.get("id") || 0));
