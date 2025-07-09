@@ -36,7 +36,7 @@
       onSuccess: () => {
         
         form.reset()
-        router.get('/verify-otp-page') // Make sure this route exists
+        router.get('/verify-otp-page') 
       },
       onError: (errors) => {
         console.error('OTP error:', errors)

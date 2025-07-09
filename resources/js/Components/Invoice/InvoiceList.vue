@@ -7,6 +7,10 @@
        <div class="card">
          <div class="card-body">
            <div>
+            <div class="d-flex justify-content-between py-2">
+              <h3>Invoice List</h3>
+<Link class="start-btn btn btn-success"  :href="`/category-save/${id}`">Create Sale</Link>
+</div>
              <input placeholder="Search..." class="form-control mb-2 w-auto form-control-sm" type="text" v-model="searchValue">
                          <EasyDataTable buttons-pagination alternating :headers="Header" :items="Item" :rows-per-page="10" :search-field="searchField" :search-value="searchValue">
                <template #item-number="{ id,invoice_id,player }">

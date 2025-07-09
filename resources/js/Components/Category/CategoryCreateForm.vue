@@ -25,7 +25,8 @@
 
 <script setup>
 import {router, useForm, usePage} from '@inertiajs/vue3'
-
+import { createToaster } from "@meforma/vue-toaster";
+const toaster = createToaster()
 
 import { ref } from "vue";
 
@@ -53,11 +54,11 @@ function submit() {
       if (id.value !== 0)
       {
       
-        alert("Category Updated")
-        router.visit('CategoryPage')
+        toaster.success("Category Updated")
+        router.visit('/CategoryPage')
       }
       else {
-        alert("Category Created")
+        toaster.success("Category Updated")
         form.reset()
       }
       

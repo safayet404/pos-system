@@ -17,6 +17,19 @@ class CustomerController extends Controller
         $list = Customer::where('user_id', $user_id)->get();
         return Inertia::render('CustomerPage', ['list' => $list]);
     }
+    function CustomerSave(Request $request)
+    {
+        $user_id = $request->header('id');
+
+        $customer_id = $request->query('id');
+        if ($customer_id != 0) {
+            $list = Customer::where('id', $customer_id)->where('user_id', $user_id)->first();
+            return Inertia::render('CustomerSavePage', ['list' => $list]);
+        } else {
+
+            return Inertia::render('CustomerSavePage');
+        }
+    }
 
 
     public function CustomerCreate(Request $request)
@@ -37,10 +50,7 @@ class CustomerController extends Controller
                 'user_id' => $user_id
             ]);
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $customer
-            ]);
+            return redirect()->back()->with('success', 'Customer Updated successfully.');
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',
@@ -92,10 +102,7 @@ class CustomerController extends Controller
 
             $customer->fill($data)->save();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Customer updated successfully'
-            ], 200);
+            return redirect()->back()->with('message', 'Customer updated successfully');
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'fail',

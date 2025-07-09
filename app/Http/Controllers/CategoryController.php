@@ -29,7 +29,6 @@ class CategoryController extends Controller
 
             return Inertia::render('CategorySavePage');
         }
-        // $list = Category::with('user:id,name')->where('user_id', $user_id)->get();
     }
     function CategoryList(Request $request)
     {

@@ -24,7 +24,11 @@
               <span class="side-bar-item-caption">Category</span>
           </Link>
           
-          <Link href="/CustomerPage" class="side-bar-item">
+          <Link href="/customer-save" class="side-bar-item">
+              <span class="side-bar-item-icon"><i class="fa fa-users text-white"/></span>
+              <span class="side-bar-item-caption">Create Customer</span>
+          </Link>
+    <Link href="/CustomerPage" class="side-bar-item">
               <span class="side-bar-item-icon"><i class="fa fa-users text-white"/></span>
               <span class="side-bar-item-caption">Customer</span>
           </Link>
