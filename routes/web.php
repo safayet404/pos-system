@@ -36,6 +36,7 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/CustomerPage', [CustomerController::class, 'CustomerPage'])->name('CustomerPage');
     Route::get('/customer-save', [CustomerController::class, 'CustomerSave'])->name('customer-save');
     Route::get('/ProductPage', [ProductController::class, 'ProductPage'])->name('ProductPage');
+    Route::get('/product-save', [ProductController::class, 'ProductSavePage'])->name('product-save');
     Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');
     Route::get('/InvoiceListPage', [InvoiceController::class, 'InvoiceListPage'])->name('InvoiceListPage');
     Route::get('/profile', [UserController::class, 'ProfilePage'])->name('profile');

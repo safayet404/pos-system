@@ -43,7 +43,7 @@ class CustomerController extends Controller
                 'mobile' => 'required|string|max:50'
             ]);
 
-            $customer = Customer::create([
+             Customer::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'mobile' => $validated['mobile'],

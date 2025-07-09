@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,6 +19,23 @@ class ProductController extends Controller
 
         $list =  Product::with('category')->where('user_id', $user_id)->get();
         return Inertia::render('ProductPage', ['list' => $list]);
+
+    }function ProductSavePage(Request $request)
+    {
+
+        $user_id = $request->header('id');
+
+        $product_id = $request->query('id');
+        if ($product_id != 0) {
+            $list = Product::with('category')->where('id', $product_id)->where('user_id', $user_id)->first();
+            $category = Category::where('user_id',$user_id)->get();
+            return Inertia::render('ProductSavePage', ['list' => $list, 'category' => $category]);
+        } else {
+            $user_id = $request->header('id');
+            $category = Category::where('user_id',$user_id)->get();
+            return Inertia::render('ProductSavePage',['category' => $category]);
+        }
+       
     }
     function ProductCreate(Request $request)
     {
@@ -31,19 +49,18 @@ class ProductController extends Controller
                 'category_id' => 'required|integer|exists:categories,id'
             ]);
 
-            return Product::create([
+            Product::create([
                 'name' => $validated['name'],
                 'price' =>  $validated['price'],
                 'unit' => $validated['unit'],
                 'category_id' => $validated['category_id'],
                 'user_id' => $user_id
             ]);
+
+            return redirect()->back()->with('message','Product added successfully');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Product creation failed',
-                'error' => $e->getMessage()
-            ], 500);
+            return redirect()->back()->withErrors(['message' => 'Something went wrong']);
+
         }
     }
     function ProductList(Request $request)
@@ -90,10 +107,7 @@ class ProductController extends Controller
 
             $product->fill($data)->save();
 
-            return response()->json([
-                'status' => "success",
-                "message" => "Product updated successfully"
-            ]);
+            return redirect()->back()->with('message','Product Updated successfully');
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'fail',

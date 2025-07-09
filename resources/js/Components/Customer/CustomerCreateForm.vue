@@ -9,7 +9,7 @@
                                 <h4>
                                     {{
                                         id !== 0
-                                            ? "Update Category"
+                                            ? "Update Customer"
                                             : "Create Customer"
                                     }}
                                 </h4>
