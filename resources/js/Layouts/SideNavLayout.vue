@@ -26,7 +26,6 @@
         </nav>
 
         <div :class="isOpen ? 'side-nav-open' : 'side-nav-close'" id="sideNav">
-            <!-- Sidebar links -->
             <Link href="/dashboard" class="side-bar-item">
                 <span class="side-bar-item-icon"
                     ><i class="fa fa-tachometer-alt text-white"
@@ -72,19 +71,17 @@
                 /></span>
                 <span class="side-bar-item-caption">Create Product</span>
             </Link>
-
-            <Link href="/SalePage" class="side-bar-item">
-                <span class="side-bar-item-icon"
-                    ><i class="fa fa-shopping-cart text-white"
-                /></span>
-                <span class="side-bar-item-caption">Create Sale</span>
-            </Link>
-
             <Link href="/InvoiceListPage" class="side-bar-item">
                 <span class="side-bar-item-icon"
                     ><i class="fa fa-file-invoice-dollar text-white"
                 /></span>
                 <span class="side-bar-item-caption">Invoice</span>
+            </Link>
+            <Link href="/SalePage" class="side-bar-item">
+                <span class="side-bar-item-icon"
+                    ><i class="fa fa-shopping-cart text-white"
+                /></span>
+                <span class="side-bar-item-caption">Create Sale</span>
             </Link>
 
             <Link href="/profile" class="side-bar-item">
@@ -94,7 +91,6 @@
                 <span class="side-bar-item-caption">Profile</span>
             </Link>
 
-            <!-- Add your other links here -->
             <button @click="logout" class="reset-button side-bar-item">
                 <span class="side-bar-item-icon"
                     ><i class="fa fa-sign-out-alt text-white"

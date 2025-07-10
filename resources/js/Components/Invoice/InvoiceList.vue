@@ -8,8 +8,8 @@
                             <div class="d-flex justify-content-between py-2">
                                 <h3>Invoice List</h3>
                                 <Link
-                                    class="start-btn btn btn-success"
-                                    :href="`/category-save/${id}`"
+                                    class="start-btn btn btn-dark"
+                                    href="/SalePage"
                                     >Create Sale</Link
                                 >
                             </div>
@@ -29,10 +29,16 @@
                                 :search-value="searchValue"
                             >
                                 <template
-                                    #item-number="{ id, invoice_id, player }"
+                                    #item-number="{ id, cus_id, invoice_id }"
                                 >
                                     <button
-                                        class="btn btn-success mx-3 btn-sm"
+                                        class="btn btn-dark mx-3 btn-sm"
+                                        @click="openInvoice({ cus_id, id })"
+                                    >
+                                        <i class="fa fa-eye text-white" />
+                                    </button>
+                                    <button
+                                        class="btn btn-dark mx-3 btn-sm"
                                         @click="itemClick(3, player)"
                                     >
                                         Edit
@@ -45,6 +51,7 @@
                                     </button>
                                 </template>
                             </EasyDataTable>
+                            <InvoiceModal ref="invoiceModal" />
                         </div>
                     </div>
                 </div>
@@ -55,11 +62,12 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { Link, router, usePage } from "@inertiajs/vue3";
 const page = usePage();
 console.log("invoice", page?.props?.list);
-
+const invoiceList = page?.props?.list;
 import { createToaster } from "@meforma/vue-toaster";
+import InvoiceModal from "../Modal/InvoiceModal.vue";
 const toaster = createToaster();
 const searchValue = ref("");
 const searchField = "product";
@@ -68,9 +76,10 @@ const Header = [
     //  { text: "ID", value: "id" },
     { text: "Name", value: "name" },
     { text: "Mobile", value: "mobile" },
+    { text: "Total", value: "total" },
     //  { text: "Product", value: "product"},
     //  { text: "Qty", value: "qty"},
-    { text: "Sale Price", value: "price" },
+    // { text: "Sale Price", value: "price" },
     { text: "Discount", value: "discount" },
     //  { text: "Invoice ID", value: "invoice_id"},
     { text: "Vat", value: "vat" },
@@ -79,36 +88,34 @@ const Header = [
 ];
 
 const Item = ref([]);
-onMounted(async () => {
-    try {
-        const res = await fetch("/invoice-list");
-        if (!res.ok) throw new Error("Failed to fetch customer");
-        const invoices = await res.json();
-        console.log("invoices", invoices);
+Item.value = invoiceList.map((item, index) => ({
+    id: item.id,
 
-        Item.value = invoices.map((item, index) => ({
-            id: item.id,
+    no: index + 1,
+    cus_id: item?.customer_id,
 
-            no: index + 1,
-            name: item.invoice.customer.name,
-            mobile: item.invoice.customer.mobile,
+    name: item?.customer?.name,
+    mobile: item?.customer?.mobile,
 
-            price: item.sale_price,
-            discount: item.invoice.discount,
-            vat: item.invoice.vat,
-            payable: item.invoice.payable,
-        }));
-    } catch (e) {
-        console.log("Error fetching products", error);
-    }
-});
+    discount: item?.discount,
+    total: item?.total,
+    payable: item?.payable,
 
-const DeleteClick = (id, invoice_id) => {
+    vat: item?.vat,
+}));
+
+const invoiceModal = ref(null);
+
+function openInvoice({ cus_id, id }) {
+    invoiceModal.value.openModal(cus_id, id);
+}
+
+const DeleteClick = (id) => {
     let text = "Do you want to delete this?";
 
     if (confirm(text) === true) {
         router.post(
-            `/delete-invoice/${invoice_id}`,
+            `/delete-invoice/${id}`,
             {},
             {
                 onSuccess: () => {

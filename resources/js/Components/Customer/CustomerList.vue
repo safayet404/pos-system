@@ -8,7 +8,7 @@
                             <div class="d-flex justify-content-between py-2">
                                 <h3>Customer List</h3>
                                 <Link
-                                    class="start-btn btn btn-success"
+                                    class="start-btn btn btn-dark"
                                     href="/customer-save"
                                     >Customer Create</Link
                                 >
@@ -30,7 +30,7 @@
                             >
                                 <template #item-number="{ id }">
                                     <Link
-                                        class="btn btn-success mx-3 btn-sm"
+                                        class="btn btn-dark mx-3 btn-sm"
                                         :href="`/customer-save/?id=${id}`"
                                     >
                                         Edit

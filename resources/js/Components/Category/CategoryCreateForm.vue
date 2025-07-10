@@ -34,7 +34,7 @@
                                 <br />
                                 <button
                                     type="submit"
-                                    class="btn w-100 btn-success"
+                                    class="btn w-100 btn-dark"
                                 >
                                     {{
                                         id !== 0

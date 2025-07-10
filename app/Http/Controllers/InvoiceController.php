@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\InvoiceProduct;
+use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +20,18 @@ class InvoiceController extends Controller
     {
         $user_id = $request->header('id');
 
-        $list =  InvoiceProduct::with(['product', 'invoice.customer'])->where('user_id', $user_id)->get();
+        $list = Invoice::with('customer')->where('user_id', $user_id)
+        ->orderBy('created_at', 'desc') // descending order
+        ->get();
 
         return Inertia::render('InvoiceListPage',['list' => $list]);
     }
-    function SalePage()
+    function SalePage(Request $request)
     {
-        return Inertia::render('SalePage');
+        $user_id = $request->header('id');
+        $customer = Customer::where('user_id', $user_id)->get();
+        $products =  Product::where('user_id', $user_id)->get();
+        return Inertia::render('SalePage',['customers' => $customer,'products' => $products]);
     }
 
     function CreateInvoice(Request $request)
@@ -69,11 +75,7 @@ class InvoiceController extends Controller
             }
 
             DB::commit();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Invoice created successfully',
-                'invoice_id' => $invoiceID
-            ], 201);
+            return redirect()->back()->with('message',"Invoice created");
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -104,17 +106,27 @@ class InvoiceController extends Controller
         $user_id = $request->header('id');
         $customer_id = $request->input('cus_id');
         $invoice_id = $request->input('inv_id');
-
-        $customerDetails = Customer::where('user_id', $user_id)->where('id', $customer_id)->first();
-        $invoiceTotal = Invoice::where('user_id', $user_id)->where('id', $invoice_id)->first();
-        $invoiceProduct = InvoiceProduct::where('invoice_id', $invoice_id)->where('user_id', $user_id)->with('product')->get();
-
-        return array(
+    
+        $customerDetails = Customer::where('user_id', $user_id)
+                                   ->where('id', $customer_id)
+                                   ->first();
+    
+        $invoiceTotal = Invoice::where('user_id', $user_id)
+                               ->where('id', $invoice_id)
+                               ->first();
+    
+        $invoiceProduct = InvoiceProduct::where('invoice_id', $invoice_id)
+                                        ->where('user_id', $user_id)
+                                        ->with('product')
+                                        ->get();
+    
+        return [
             'customer' => $customerDetails,
             'invoice' => $invoiceTotal,
             'product' => $invoiceProduct
-        );
+        ];
     }
+    
 
 
     public function InvoiceDelete(Request $request)

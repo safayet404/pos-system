@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <div class="d-flex justify-content-between py-2">
+                            <div class="d-flex justify-content-dark py-2">
                                 <h3>Product List</h3>
                                 <Link
                                     class="start-btn btn btn-success"
@@ -30,7 +30,7 @@
                             >
                                 <template #item-number="{ id, player }">
                                     <Link
-                                        class="btn btn-success mx-3 btn-sm"
+                                        class="btn btn-dark mx-3 btn-sm"
                                         :href="`/product-save?id=${id}`"
                                     >
                                         Edit

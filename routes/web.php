@@ -46,6 +46,8 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
 
 Route::post('/login', [UnifiedLogin::class, 'UnifiedLogin'])->name('login');
 Route::post('/logout', [UnifiedLogin::class, 'UnifiedLogout'])->name('logout');
+
+
 // For User 
 
 Route::post('/user-registration', [UserController::class, 'UserRegistration']);
@@ -98,7 +100,7 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/invoice-list', [InvoiceController::class, 'InvoiceList']);
     Route::post('/delete-invoice/{invoice_id}', [InvoiceController::class, 'InvoiceDelete']);
 
-    Route::get('/invoice-details', [InvoiceController::class, 'InvoiceDetails']);
+    Route::post('/invoice-details', [InvoiceController::class, 'InvoiceDetails']);
 });
 // Routes for Dashboard
 
