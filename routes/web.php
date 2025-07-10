@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'HomePage'])->name('home');
 Route::get('/login-page', [UserController::class, 'LoginPage'])->name('login-page');
-Route::get('/RegistrationPage', [UserController::class, 'registration'])->name('registratin');
+Route::get('/registration', [UserController::class, 'RegistrationPage'])->name('registratin');
 Route::get('/reset-password-page', [UserController::class, 'ResetPasswordPage'])->name('reset-password-page');
 Route::get('/send-otp-page', [UserController::class, 'SendOtpPage'])->name('send-otp-page');
 Route::get('/verify-otp-page', [UserController::class, 'VerifyOtpPage'])->name('verify-otp-page');
@@ -35,9 +35,11 @@ Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/category-save', [CategoryController::class, 'CategorySavePage'])->name('category-save');
     Route::get('/CustomerPage', [CustomerController::class, 'CustomerPage'])->name('CustomerPage');
     Route::get('/customer-save', [CustomerController::class, 'CustomerSave'])->name('customer-save');
+    Route::get('/employee-save', [EmployeeController::class, 'EmployeeSavePage'])->name('employee-save');
     Route::get('/ProductPage', [ProductController::class, 'ProductPage'])->name('ProductPage');
     Route::get('/product-save', [ProductController::class, 'ProductSavePage'])->name('product-save');
     Route::get('/SalePage', [InvoiceController::class, 'SalePage'])->name('SalePage');
+    Route::get('/employee-page', [EmployeeController::class, 'EmployeePage'])->name('employee-page');
     Route::get('/InvoiceListPage', [InvoiceController::class, 'InvoiceListPage'])->name('InvoiceListPage');
     Route::get('/profile', [UserController::class, 'ProfilePage'])->name('profile');
 });

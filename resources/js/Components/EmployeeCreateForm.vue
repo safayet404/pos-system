@@ -9,8 +9,8 @@
                                 <h4>
                                     {{
                                         id !== 0
-                                            ? "Update Category"
-                                            : "Create Category"
+                                            ? "Update Customer"
+                                            : "Create Customer"
                                     }}
                                 </h4>
                                 <input
@@ -27,9 +27,36 @@
                                     id="name"
                                     name="name"
                                     v-model="form.name"
-                                    placeholder="Category Name"
+                                    placeholder="Customer Name"
                                     class="form-control"
                                     type="text"
+                                />
+                                <br />
+                                <input
+                                    id="name"
+                                    name="email"
+                                    v-model="form.email"
+                                    placeholder="Customer Email"
+                                    class="form-control"
+                                    type="email"
+                                />
+                                <br />
+                                <input
+                                    id="name"
+                                    name="mobile"
+                                    v-model="form.mobile"
+                                    placeholder="Customer Mobile"
+                                    class="form-control"
+                                    type="text"
+                                />
+                                <br />
+                                <input
+                                    id="password"
+                                    name="password"
+                                    v-model="form.password"
+                                    placeholder="Employee Passowrd"
+                                    class="form-control"
+                                    type="password"
                                 />
                                 <br />
                                 <button
@@ -38,8 +65,8 @@
                                 >
                                     {{
                                         id !== 0
-                                            ? "Update Category"
-                                            : "Add Category"
+                                            ? "Update Customer"
+                                            : "Add Customer"
                                     }}
                                 </button>
                             </div>
@@ -61,15 +88,18 @@ import { ref } from "vue";
 const urlParams = new URLSearchParams(window.location.search);
 let id = ref(parseInt(urlParams.get("id") || 0));
 const page = usePage();
-let URL = "/create-category";
+let URL = "/employee-register";
 let list = page.props.list;
 
 if (id.value !== 0 && list !== null) {
-    URL = "/update-category";
+    URL = "/update-customer";
 }
 
 const form = useForm({
     name: list?.name || "",
+    mobile: list?.mobile || "",
+    email: list?.email || "",
+    password: "",
     id: id,
 });
 
@@ -77,10 +107,11 @@ function submit() {
     form.post(URL, {
         onSuccess: () => {
             if (id.value !== 0) {
-                toaster.success("Category Updated");
-                router.visit("/CategoryPage");
+                toaster.success("Customer Updated");
+
+                router.visit("/CustomerPage");
             } else {
-                toaster.success("Category Updated");
+                toaster.success("Customer Added");
                 form.reset();
             }
         },

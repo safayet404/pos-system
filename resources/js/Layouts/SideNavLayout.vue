@@ -45,6 +45,18 @@
                 /></span>
                 <span class="side-bar-item-caption">Create Category</span>
             </Link>
+            <Link href="/employee-page" class="side-bar-item">
+                <span class="side-bar-item-icon"
+                    ><i class="fa fa-users text-white"
+                /></span>
+                <span class="side-bar-item-caption">Employee</span>
+            </Link>
+            <Link href="/employee-save" class="side-bar-item">
+                <span class="side-bar-item-icon"
+                    ><i class="fa fa-users text-white"
+                /></span>
+                <span class="side-bar-item-caption">Create Employee</span>
+            </Link>
 
             <Link href="/CustomerPage" class="side-bar-item">
                 <span class="side-bar-item-icon"
@@ -52,6 +64,7 @@
                 /></span>
                 <span class="side-bar-item-caption">Customer</span>
             </Link>
+
             <Link href="/customer-save" class="side-bar-item">
                 <span class="side-bar-item-icon"
                     ><i class="fa fa-users text-white"

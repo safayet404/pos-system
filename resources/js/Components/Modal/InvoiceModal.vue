@@ -20,7 +20,10 @@
                                 <p>User ID: {{ customer.user_id }}</p>
                             </div>
                             <div class="col-4 text-end">
-                                <!-- <img class="w-50" src="/images/logo.png" /> -->
+                                <img
+                                    class="w-50"
+                                    src="../../Assets/img/logo.png"
+                                />
                                 <p><strong>Invoice</strong></p>
                                 <p>Date: {{ today }}</p>
                             </div>
@@ -31,6 +34,7 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Qty</th>
+                                    <th>Price</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
@@ -39,16 +43,18 @@
                                     <td>{{ item.product.name }}</td>
                                     <td>{{ item.qty }}</td>
                                     <td>{{ item.sale_price }}</td>
+                                    <td>{{ item?.qty * item.sale_price }}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <hr />
                         <p><strong>Total:</strong> ${{ invoice.total }}</p>
-                        <p><strong>Payable:</strong> ${{ invoice.payable }}</p>
                         <p><strong>VAT:</strong> ${{ invoice.vat }}</p>
                         <p>
                             <strong>Discount:</strong> ${{ invoice.discount }}
                         </p>
+                        <hr />
+                        <p><strong>Payable:</strong> ${{ invoice.payable }}</p>
                     </div>
                 </div>
                 <div class="modal-footer">

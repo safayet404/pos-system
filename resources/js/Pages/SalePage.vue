@@ -156,6 +156,10 @@ function submit() {
                                 </p>
                             </div>
                             <div class="col-4 text-end">
+                                <img
+                                    class="w-50"
+                                    src="../Assets/img/logo.png"
+                                />
                                 <p class="fw-bold">Invoice</p>
                                 <p>
                                     Date:

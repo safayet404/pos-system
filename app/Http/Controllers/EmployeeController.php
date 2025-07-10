@@ -4,33 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Helper\JWTToken;
 use App\Models\Employee;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class EmployeeController extends Controller
 {
+
+    function EmployeePage(Request $request)
+    {
+        $user_id = request()->header('id');
+        $list = Employee::where("user_id",$user_id)->get();
+
+        return Inertia::render('EmployeePage',['list' => $list]);
+    }
+    function EmployeeSavePage(Request $request)
+    {
+        $user_id = $request->header('id');
+
+        $employee_id = $request->query('id');
+        if ($employee_id != 0) {
+            $list = Employee::where('id', $employee_id)->where('user_id', $user_id)->first();
+            return Inertia::render('EmployeeSavePage', ['list' => $list]);
+        } else {
+
+            return Inertia::render('EmployeeSavePage');
+        }
+    }
+
+
     public function Register(Request $request)
     {
-        $userId = $request->header('id');
-        $request->validate([
-            'name' => 'required|string|max:50',
-            'email' => 'required|email|unique:employees,email',
-            'mobile' => 'required|string|max:20',
-            'password' => 'required|string|min:6'
-        ]);
+        try {
+            $userId = $request->header('id');
+            $request->validate([
+                'name' => 'required|string|max:50',
+                'email' => 'required|email|unique:employees,email',
+                'mobile' => 'required|string|max:20',
+                'password' => 'required|string|min:6'
+            ]);
+    
+            Employee::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'password' => Hash::make($request->password),
+                'user_id' => $userId,
+            ]);
+    
+           return redirect()->back()->with("message","employee created successfully");
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors("message","Something went wrong");
 
-        Employee::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'password' => Hash::make($request->password),
-            'user_id' => $userId,
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Employee registered successfully'
-        ]);
+        }
+   
     }
 
     public function Login(Request $request)
