@@ -93,6 +93,9 @@ const DeleteClick = (id) => {
                     toaster.success("Product Deleted successfully!");
                     Item.value = Item.value.filter((item) => item.id !== id);
                 },
+                onError: () => {
+                    toaster.error("Something went wrong");
+                },
             }
         );
     }

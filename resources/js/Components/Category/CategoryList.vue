@@ -55,7 +55,8 @@
 <script setup>
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
-import CategoryCreateForm from "./CategoryCreateForm.vue";
+import { createToaster } from "@meforma/vue-toaster";
+const toaster = createToaster();
 const page = usePage();
 const category = page?.props?.list;
 
@@ -83,16 +84,16 @@ const DeleteClick = (id) => {
             {
                 preserveScroll: true,
                 onSuccess: () => {
+                    toaster.success("Category Deleted");
                     Item.value = Item.value.filter((item) => item.id !== id);
+                },
+                onError: (errors) => {
+                    toaster.error("Something went wrong");
                 },
             }
         );
     } else {
         text = "You canceled !";
     }
-};
-
-const itemClick = (number, player) => {
-    alert(`Number is=${number} & Player Name is=${player}`);
 };
 </script>

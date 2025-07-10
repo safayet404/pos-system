@@ -71,13 +71,15 @@ class ProductController extends Controller
     }
     function ProductDelete(Request $request)
     {
-        $user_id = $request->header('id');
+
+        try{
+            $user_id = $request->header('id');
         $product_id = $request->id;
 
-        $category = Product::where('id', $product_id)->where('user_id', $user_id)->first();
+        $product = Product::where('id', $product_id)->where('user_id', $user_id)->first();
 
-        if ($category) {
-            $category->delete();
+        if ($product) {
+            $product->delete();
 
             return Redirect::back()->with([
                 'status' => true,
@@ -86,6 +88,13 @@ class ProductController extends Controller
         } else {
             return response()->json(['status' => 'failed', 'message' => "This Product is not exist in the system"]);
         }
+        }catch(Exception $e)
+        {
+            return redirect()->back()->withErrors("Something went wrong");
+        }
+
+
+        
     }
     function ProductByID(Request $request)
     {

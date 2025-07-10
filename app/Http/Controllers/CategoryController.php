@@ -52,7 +52,9 @@ class CategoryController extends Controller
 
     function CategoryDelete(Request $request)
     {
-        $category_id = $request->id;
+
+        try{
+            $category_id = $request->id;
         $user_id = $request->header('id');
 
         $category = Category::where('id', $category_id)->where('user_id', $user_id)->first();
@@ -69,6 +71,11 @@ class CategoryController extends Controller
                 'message' => 'This category does not exist in the system!'
             ]);
         }
+        }catch(Exception $e)
+        {
+            return redirect()->back()->withErrors("Something went wrong");
+        }
+        
     }
     function CategoryByID(Request $request)
     {

@@ -67,7 +67,9 @@ class CustomerController extends Controller
     }
     function CustomerDelete(Request $request)
     {
-        $user_id = $request->header('id');
+
+        try{
+            $user_id = $request->header('id');
         $customer_id = $request->id;
 
         $customer = Customer::where('id', $customer_id)->where('user_id', $user_id)->first();
@@ -82,6 +84,14 @@ class CustomerController extends Controller
         } else {
             return response()->json(['status' => 'failed', 'message' => "This user is not exist in the system"]);
         }
+        }catch(Exception $e)
+        {
+            return redirect()->back()->withErrors("Something Went Wrong");
+        }
+
+
+        
+
     }
     function CustomerByID(Request $request)
     {
