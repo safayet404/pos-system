@@ -88,7 +88,7 @@ import { ref } from "vue";
 const urlParams = new URLSearchParams(window.location.search);
 let id = ref(parseInt(urlParams.get("id") || 0));
 const page = usePage();
-let URL = "/employee-registern";
+let URL = "/employee-register";
 let list = page.props.list;
 
 if (id.value !== 0 && list !== null) {

@@ -110,9 +110,10 @@ class UserController extends Controller
         $email = $request->input('email');
         $otp = rand(1000, 9999);
 
-        $count = User::where('email', $email)->count();
+        $UserCount = User::where('email', $email)->count();
+        $EmployeeCount = Employee::where('email', $email)->count();
 
-        if ($count == 1) {
+        if ($UserCount == 1) {
             try {
                 Mail::to($email)->send(new OTPMail($otp));
             } catch (\Exception $e) {
@@ -122,6 +123,20 @@ class UserController extends Controller
             }
 
             User::where('email', $email)->update(['otp' => $otp]);
+
+            $data = ['message' => "Otp send successfully", 'status' => true, 'error' => ''];
+            $request->session()->put('email', $email);
+            return redirect('/verify-otp-page')->with('flash', $data);
+        }elseif($EmployeeCount == 1){
+            try {
+                Mail::to($email)->send(new OTPMail($otp));
+            } catch (\Exception $e) {
+                return Redirect::back()->withErrors([
+                    'email' => 'Mail sending failed: ' . $e->getMessage()
+                ]);
+            }
+
+            Employee::where('email', $email)->update(['otp' => $otp]);
 
             $data = ['message' => "Otp send successfully", 'status' => true, 'error' => ''];
             $request->session()->put('email', $email);
@@ -137,12 +152,23 @@ class UserController extends Controller
     {
         $email = $request->session()->get('email');
         $otp = $request->input('otp');
-        $count = User::where('email', '=', $email)
+        $UserCount = User::where('email', '=', $email)
+            ->where('otp', '=', $otp)
+            ->count();
+        $EmployeeCount = Employee::where('email', '=', $email)
             ->where('otp', '=', $otp)
             ->count();
 
-        if ($count === 1) {
+        if ($UserCount === 1) {
             User::where('email', '=', $email)->update(['otp' => '0']);
+            $request->session()->put('otp_verify', 'yes');
+            $token = JWTToken::CreateTokenForSetPassword($email);
+
+            return redirect('/reset-password-page')
+                ->with('message', 'OTP verification successful')
+                ->cookie('token', $token, 60 * 24 * 30);
+        }elseif($EmployeeCount == 1){
+            Employee::where('email', '=', $email)->update(['otp' => '0']);
             $request->session()->put('otp_verify', 'yes');
             $token = JWTToken::CreateTokenForSetPassword($email);
 
@@ -162,12 +188,24 @@ class UserController extends Controller
             $password = $request->input('password');
             $hashedPassword = Hash::make($password);
 
+            $UserCount = User::where('email', '=', $email)->first();
+            $EmployeeCount = Employee::where('email', '=', $email)->first();
+
             $otp_verify = $request->session()->get('otp_verify', 'default');
 
             if ($otp_verify == "yes") {
 
-                User::where('email', '=', $email)->update(['password' => $hashedPassword]);
-                $request->session()->flush();
+                if($UserCount == 1)
+                {
+
+                    User::where('email', '=', $email)->update(['password' => $hashedPassword]);
+                    $request->session()->flush();
+                }
+                else{
+                    Employee::where('email', '=', $email)->update(['password' => $hashedPassword]);
+                    $request->session()->flush();
+                }
+
                 return redirect('/login-page')->with('message', 'Password updated successfully');
             }
         } catch (Exception $e) {
