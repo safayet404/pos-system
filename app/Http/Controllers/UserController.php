@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\JWTToken;
 use App\Mail\OTPMail;
+use App\Models\Employee;
 use App\Models\User;
 use Exception;
 
@@ -19,11 +20,6 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-
-
-
-
-
     function LoginPage()
     {
         return Inertia::render('LoginPage');
@@ -50,21 +46,15 @@ class UserController extends Controller
     function ProfilePage(Request $request)
     {
         $email = $request->header('email');
-        $user = User::where('email', $email)->first();
+        $user = Employee::where('email', $email)->first() ??   User::where('email', $email)->first();
         return Inertia::render('ProfilePage', [
             'user' => $user
         ]);
     }
 
-
-
-
     function UserRegistration(Request $request)
     {
-
         try {
-
-
             $validated = $request->validate([
                 'name' => 'required|string|max:50',
                 'email' => 'required|email|unique:users,email',
@@ -167,9 +157,7 @@ class UserController extends Controller
 
     function ResetPassword(Request $request)
     {
-
         try {
-
             $email = $request->session()->get('email');
             $password = $request->input('password');
             $hashedPassword = Hash::make($password);
@@ -193,9 +181,6 @@ class UserController extends Controller
     {
         $email = $request->header('email');
         $user = User::where('email', '=', $email)->first();
-
-
-
         return response()->json([
             'status' => 'success',
             'message' => 'Request Success',
@@ -203,15 +188,13 @@ class UserController extends Controller
         ]);
     }
 
-
-
     function UpdateProfile(Request $request)
     {
         try {
             $email = $request->header('email');
             $user = User::where('email', $email)->firstOrFail();
 
-            // Validation (recommended)
+           
             $request->validate([
                 'name' => 'required|string|max:255',
                 'mobile' => 'nullable|string|max:20',

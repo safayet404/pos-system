@@ -98,6 +98,39 @@ class EmployeeController extends Controller
         ]);
     }
 
+    function UpdateEmloyee(Request $request)
+    {
+        try {
+            $user_id = $request->header('id');
+            $employee_id = $request->input('id');
+
+            $employee = Employee::where('id', $employee_id)->where('user_id', $user_id)->first();
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|max:20',
+                'mobile' => 'nullable|string|max:20',
+                'password' => 'nullable|string|min:6',
+            ]);
+
+            $data = $request->only(['name', 'mobile','email', 'password']);
+
+            if (!empty($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            } else {
+                unset($data['password']);
+            }
+
+            $employee->fill($data)->save();
+
+            return redirect()->back()->with('message', 'Employee updated successfully');
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Something went wrong in update employee'
+            ], 500);
+        }
+    }
+
     public function Logout(Request $request)
     {
 

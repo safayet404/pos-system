@@ -59,9 +59,11 @@ Route::get('/send-otp', [UserController::class, 'SendOTPCode']);
 Route::get('/verify-otp', [UserController::class, 'VerifyOTP']);
 
 Route::post('/reset-password', [UserController::class, 'ResetPassword']);
+
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::get('/user-profile', [UserController::class, 'UserProfile']);
     Route::put('/user-update', [UserController::class, 'UpdateProfile']);
+    
 });
 
 
@@ -120,4 +122,5 @@ Route::post('/employee-logout', [EmployeeController::class, 'Logout']);
 Route::middleware([TokenVerificationMiddleware::class])->group(function () {
     Route::post('/employee-register', [EmployeeController::class, 'Register']);
     Route::get('/employee-profile', [EmployeeController::class, 'Profile']);
+    Route::post('/employee-update', [EmployeeController::class, 'UpdateEmloyee']);
 });

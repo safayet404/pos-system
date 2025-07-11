@@ -27,7 +27,7 @@
                                     id="name"
                                     name="name"
                                     v-model="form.name"
-                                    placeholder="Customer Name"
+                                    placeholder="Employee Name"
                                     class="form-control"
                                     type="text"
                                 />
@@ -36,7 +36,7 @@
                                     id="name"
                                     name="email"
                                     v-model="form.email"
-                                    placeholder="Customer Email"
+                                    placeholder="Employee Email"
                                     class="form-control"
                                     type="email"
                                 />
@@ -45,7 +45,7 @@
                                     id="name"
                                     name="mobile"
                                     v-model="form.mobile"
-                                    placeholder="Customer Mobile"
+                                    placeholder="Employee Mobile"
                                     class="form-control"
                                     type="text"
                                 />
@@ -65,8 +65,8 @@
                                 >
                                     {{
                                         id !== 0
-                                            ? "Update Customer"
-                                            : "Add Customer"
+                                            ? "Update Employee"
+                                            : "Add Employee"
                                     }}
                                 </button>
                             </div>
@@ -88,11 +88,11 @@ import { ref } from "vue";
 const urlParams = new URLSearchParams(window.location.search);
 let id = ref(parseInt(urlParams.get("id") || 0));
 const page = usePage();
-let URL = "/employee-register";
+let URL = "/employee-registern";
 let list = page.props.list;
 
 if (id.value !== 0 && list !== null) {
-    URL = "/update-customer";
+    URL = "/employee-update";
 }
 
 const form = useForm({
@@ -107,11 +107,11 @@ function submit() {
     form.post(URL, {
         onSuccess: () => {
             if (id.value !== 0) {
-                toaster.success("Customer Updated");
+                toaster.success("Employee Updated");
 
-                router.visit("/CustomerPage");
+                router.visit("/employee-page");
             } else {
-                toaster.success("Customer Added");
+                toaster.success("Employee Added");
                 form.reset();
             }
         },

@@ -8,7 +8,7 @@ const user = page.props.user || {};
 const form = useForm({
     name: user.name || "",
     mobile: user?.mobile || "",
-    password: user?.password || "",
+    password: "",
 });
 
 function submit() {
