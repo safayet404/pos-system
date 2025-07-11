@@ -17,8 +17,8 @@
                                     v-if="id !== 0"
                                     id="id"
                                     name="id"
-                                    v-model="form.id"
-                                    placeholder="Category ID"
+                                    v-model="id"
+                                    placeholder="Employee ID"
                                     class="form-control"
                                     type="text"
                                 />
@@ -100,15 +100,16 @@ const form = useForm({
     mobile: list?.mobile || "",
     email: list?.email || "",
     password: "",
-    id: id,
 });
 
 function submit() {
     form.post(URL, {
+        headers: {
+            "employee-id": id?.value,
+        },
         onSuccess: () => {
             if (id.value !== 0) {
                 toaster.success("Employee Updated");
-
                 router.visit("/employee-page");
             } else {
                 toaster.success("Employee Added");

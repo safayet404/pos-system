@@ -6,18 +6,25 @@ const page = usePage();
 const user = page.props.user || {};
 
 const form = useForm({
-    name: user.name || "",
+    name: user?.name || "",
+    email: user?.email || "",
     mobile: user?.mobile || "",
     password: "",
 });
 
+let URL = "/user-update";
+
+if (user?.role === "employee") {
+    URL = "/employee-update";
+}
+
 function submit() {
-    form.put("/user-update", {
+    form.post(URL, {
         onSuccess: () => {
-            toaster.success("updated");
+            toaster.success("Profile Updated");
         },
         onError: (errors) => {
-            console.log("Validation Errors:", errors);
+            toaster.error("Something Went Wrong");
         },
     });
 }
@@ -30,7 +37,7 @@ function submit() {
                 <div class="card animated fadeIn w-100 p-3">
                     <form @submit.prevent="submit">
                         <div class="card-body">
-                            <h4>User Profile</h4>
+                            <h4>User Profile {{ user?.role }}</h4>
                             <hr />
                             <div class="container-fluid m-0 p-0">
                                 <div class="row m-0 p-0">

@@ -102,12 +102,12 @@ class EmployeeController extends Controller
     {
         try {
             $user_id = $request->header('id');
-            $employee_id = $request->input('id');
+            $employee_id = $request->header('employee-id');
 
             $employee = Employee::where('id', $employee_id)->where('user_id', $user_id)->first();
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|max:20',
+                'email' => 'nullable|string|max:20',
                 'mobile' => 'nullable|string|max:20',
                 'password' => 'nullable|string|min:6',
             ]);
