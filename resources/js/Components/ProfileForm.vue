@@ -9,7 +9,7 @@ const form = useForm({
     name: user?.name || "",
     email: user?.email || "",
     mobile: user?.mobile || "",
-
+    role: user?.role || "",
     password: "",
 });
 
@@ -47,6 +47,19 @@ function submit() {
                                         <input
                                             id="name"
                                             v-model="form.name"
+                                            placeholder="Name"
+                                            class="form-control"
+                                            type="text"
+                                        />
+                                    </div>
+                                    <div
+                                        v-if="form.role === 'employee'"
+                                        class="col-md-12 p-2"
+                                    >
+                                        <label>Email</label>
+                                        <input
+                                            id="name"
+                                            v-model="form.email"
                                             placeholder="Name"
                                             class="form-control"
                                             type="text"

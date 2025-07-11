@@ -73,7 +73,7 @@ class UserController extends Controller
 
             return redirect('/login-page')->with('success', 'User registered!');
         } catch (Exception $e) {
-            return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
+          return redirect()->back()->withErrors("Something Went Wrong");
         }
     }
     function UserLogin(Request $request)

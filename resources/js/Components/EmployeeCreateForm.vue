@@ -116,6 +116,9 @@ function submit() {
                 form.reset();
             }
         },
+        onError: () => {
+            toaster.error("Something Went Wrong");
+        },
     });
 }
 </script>
