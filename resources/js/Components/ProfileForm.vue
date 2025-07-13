@@ -24,7 +24,7 @@ function submit() {
         onSuccess: () => {
             toaster.success("Profile Updated");
         },
-        onError: (errors) => {
+        onError: () => {
             toaster.error("Something Went Wrong");
         },
     });
