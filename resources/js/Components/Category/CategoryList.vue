@@ -76,7 +76,7 @@ const Item = ref(
 );
 
 const DeleteClick = (id) => {
-    let text = "Do you want to delete";
+    let text = "Do you want to delete ?";
     if (confirm(text) === true) {
         router.post(
             `/delete-category/${id}`,
