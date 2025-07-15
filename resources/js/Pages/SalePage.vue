@@ -22,6 +22,7 @@ const CustomerHeader = [
 const ProductHeader = [
     { text: "Name", value: "name" },
     { text: "Price", value: "price" },
+    { text: "Unit", value: "unit" },
     { text: "Action", value: "number" },
 ];
 
@@ -132,6 +133,9 @@ function submit() {
         onSuccess: () => {
             router.visit("/InvoiceListPage");
             toaster.success("Invoice Added");
+        },
+        onError: () => {
+            toaster.success("Something Went Wrong");
         },
     });
 }

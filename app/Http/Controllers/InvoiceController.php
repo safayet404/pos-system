@@ -74,15 +74,14 @@ class InvoiceController extends Controller
                 ]);
             }
 
+            
+            Product::where('id', $product['product_id'])->decrement('unit', $product['qty']);
+
             DB::commit();
             return redirect()->back()->with('message',"Invoice created");
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Invoice creation failed',
-                'error' => $e->getMessage()
-            ], 500);
+           return redirect()->back()->withErrors("Something Went Wrong");
         }
     }
 
