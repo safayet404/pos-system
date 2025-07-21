@@ -6,7 +6,7 @@
                     <div class="card-body">
                         <div>
                             <div class="d-flex justify-content-between py-2">
-                                <h3>Category Lists</h3>
+                                <h3>Category List</h3>
                                 <Link
                                     class="start-btn btn btn-dark"
                                     href="/category-save"
