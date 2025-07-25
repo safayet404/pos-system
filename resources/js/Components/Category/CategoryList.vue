@@ -10,7 +10,7 @@
                                 <Link
                                     class="start-btn btn btn-dark"
                                     href="/category-save"
-                                    >Categories Create</Link
+                                    >Category Create</Link
                                 >
                             </div>
 
