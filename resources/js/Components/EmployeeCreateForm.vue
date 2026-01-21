@@ -10,7 +10,7 @@
                                     {{
                                         id !== 0
                                             ? "Update Customer"
-                                            : "Create Customer"
+                                            : "Create Customers"
                                     }}
                                 </h4>
                                 <input
