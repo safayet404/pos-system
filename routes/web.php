@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 // Laravel Vue Login Page Routing
 
+login
 Route::get('/', [HomeController::class, 'HomePage'])->name('home');
 Route::get('/login-page', [UserController::class, 'LoginPage'])->name('login-page');
 Route::get('/registration', [UserController::class, 'RegistrationPage'])->name('registratin');
